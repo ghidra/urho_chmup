@@ -58,13 +58,13 @@ void Main::Start()
 
     applicationInput_ = new ApplicationInput(context_);
     SetApplicationInput(applicationInput_);//this also set up the basic camera
-    applicationInput_->SetCameraType(String("sidescrolling"));
+    applicationInput_->SetCameraType(String("shmup"));
     
     VariantMap camParms;
     camParms["targetOffset"] = Vector3(0.0f,6.0f,0.0f);
     camParms["distance"] = 50.0f;
     camParms["distance_max"] = 100.0f;
-    camParms["orientation"] = Quaternion(10.0f,0.0f,0.0f);
+    camParms["orientation"] = Quaternion(80.0f,0.0f,0.0f);
 
     applicationInput_->SetCameraParameters(camParms);
 
@@ -74,8 +74,14 @@ void Main::Start()
 
     //----------------
 
+    level_ = new ChmupDebugLevel(context_);
+    level_->Setup(scene_, cameraNode_);
+
+    //----------------
+
     characterNode_ = scene_->CreateChild("Jack");
     Character* character_ = characterNode_->CreateComponent<Character>();
+    character_->GetNode()->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
 
     //character_ = new Character(context_);
     character_->Setup();

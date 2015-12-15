@@ -4,6 +4,7 @@
 #pragma once
 
 #include "framework/src/ApplicationHandler.h"
+#include "levels/ChmupDebugLevel.h"
 
 namespace Urho3D
 {
@@ -27,6 +28,7 @@ public:
     virtual void Start();
 
 private:
+	ChmupDebugLevel* level_;
     SharedPtr<Node> characterNode_;
 };
 #endif
