@@ -19,16 +19,16 @@ class CameraLogic;
 
 class Main : public ApplicationHandler
 {
-    URHO3D_OBJECT(Main,ApplicationHandler);
+    	URHO3D_OBJECT(Main,ApplicationHandler);
 
 public:
-    Main(Context* context);
-    ~Main();
+	Main(Context* context);
+    	~Main();
 
-    virtual void Start();
+    	virtual void Start();
 
 private:
 	ChmupDebugLevel* level_;
-    SharedPtr<Node> characterNode_;
+    	SharedPtr<Node> characterNode_;
 };
 #endif

@@ -31,6 +31,8 @@
 #include "framework/src/Controller.h"
 #include "framework/src/State.h"
 #include "framework/src/CameraLogic.h"
+#include "game/Gun01.h"
+#include "framework/src/Projectile.h"
 #include "game/Character.h"
 
 
@@ -48,6 +50,8 @@ Main::Main(Context* context) :
     CameraLogic::RegisterObject(context);
     Character::RegisterObject(context);
     RagDoll::RegisterObject(context);
+    Gun01::RegisterObject(context);
+    Projectile::RegisterObject(context);
 }
 Main::~Main(){}
 
@@ -61,7 +65,7 @@ void Main::Start()
     applicationInput_->SetCameraType(String("shmup"));
     
     VariantMap camParms;
-    camParms["targetOffset"] = Vector3(0.0f,6.0f,0.0f);
+    camParms["targetOffset"] = Vector3(0.0f,0.0f,10.0f);
     camParms["distance"] = 50.0f;
     camParms["distance_max"] = 100.0f;
     camParms["orientation"] = Quaternion(80.0f,0.0f,0.0f);
@@ -82,11 +86,9 @@ void Main::Start()
     characterNode_ = scene_->CreateChild("Jack");
     Character* character_ = characterNode_->CreateComponent<Character>();
     character_->GetNode()->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
-
-    //character_ = new Character(context_);
     character_->Setup();
-    //character_->GetNode()->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
     character_->Possess(applicationInput_);
+    //character_->EquipWeapon();
 
     //----my first enemy
     //enemyNode_ = scene_->CreateChild("Jack");

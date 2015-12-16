@@ -1,0 +1,20 @@
+left off:
+
+-give ship a weapon, simple pea shooter
+
+add some pickups in the scene
+-specifically weapon pickups
+
+---------
+
+big picture:
+ship can have pick ups that effects its flight speed, changes its over all look
+-wings
+-rockets
+-etc
+
+-prcedural BG
+
+-rougelike elements
+
+-how do we deal with enemy movement

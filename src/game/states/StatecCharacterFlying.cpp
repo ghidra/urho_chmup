@@ -17,8 +17,8 @@ StateCharacterFlying::~StateCharacterFlying(){}
 State* StateCharacterFlying::HandleInput(Controls& ctrl)
 {
 	//get the move direction
-	moveDir_ = Vector3::ZERO;
-	if (ctrl.IsDown(CTRL_UP))
+    moveDir_ = Vector3::ZERO;
+    if (ctrl.IsDown(CTRL_UP))
         moveDir_ += Vector3::FORWARD;
     if (ctrl.IsDown(CTRL_DOWN))
         moveDir_ += Vector3::BACK;
@@ -28,21 +28,21 @@ State* StateCharacterFlying::HandleInput(Controls& ctrl)
         moveDir_ += Vector3::RIGHT;
     
     // Normalize move vector so that diagonal strafing is not faster
-    if (moveDir_.LengthSquared() > 0.0f)
+    /*if (moveDir_.LengthSquared() > 0.0f)
     {
-        moveDir_*=Vector3(1.0f,1.0f,0.0f);//flatten movement out to a plane
+        moveDir_*=Vector3(1.0f,0.0f,1.0f);//flatten movement out to a plane
         moveDir_.Normalize();
-    }
+    }*/
     //------------------
 
-	if ( ctrl.IsDown(CTRL_JUMP) ) 
-	{
+    if ( ctrl.IsDown(CTRL_JUMP) ) 
+    {
         return NULL;
 		//we want to jump
 		//return new StateCharacterJumping(context_);
-	}else{
-		return NULL;
-	}
+    }else{
+        return NULL;
+    }
 }
 void StateCharacterFlying::Update()
 {
