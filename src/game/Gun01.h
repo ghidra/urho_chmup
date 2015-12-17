@@ -29,12 +29,12 @@ public:
     
     static void RegisterObject(Context* context);
 
-    virtual void Start();
-    virtual void FixedUpdate(float timeStep);
+    //virtual void Start();
+    //virtual void FixedUpdate(float timeStep);
     virtual void Setup();
 
 protected:
-    virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
+    //virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
     virtual void SpawnProjectile();
    
 };

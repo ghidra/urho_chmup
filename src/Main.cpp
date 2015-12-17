@@ -88,7 +88,12 @@ void Main::Start()
     character_->GetNode()->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
     character_->Setup();
     character_->Possess(applicationInput_);
-    //character_->EquipWeapon();
+    //create another node for the weapon
+    Node* weaponNode = characterNode_->CreateChild("Weapon");
+    weaponNode->SetPosition(Vector3(0.5f, 1.0f, 0.0f));
+    Gun01* weapon = weaponNode->CreateComponent<Gun01>();
+    weapon->Setup();
+    character_->EquipWeapon(weapon);
 
     //----my first enemy
     //enemyNode_ = scene_->CreateChild("Jack");

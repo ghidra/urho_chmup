@@ -21,6 +21,7 @@
 #include "Gun01.h"
 
 #include "../framework/src/Weapon.h"
+#include "../framework/src/Projectile.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -33,7 +34,7 @@ Gun01::Gun01(Context* context) :
     //SetUpdateEventMask(USE_FIXEDUPDATE);
     //collision_layer_ = 4;
     //collision_mask_ = 33;
-    mesh_ = String("Man/MAN_gun.mdl");
+    mesh_ = String("Box.mdl");
 }
 Gun01::~Gun01(){}
 //-------------------
@@ -44,31 +45,39 @@ void Gun01::RegisterObject(Context* context)
 
 }
 
-void Gun01::Start()
+/*void Gun01::Start()
 {
+    //SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(Gun01, HandleNodeCollision));
 
-    SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(Gun01, HandleNodeCollision));
-
-}
+}*/
 void Gun01::Setup()
 {
-    Weapon::Setup();
+    //Weapon::Setup();
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+
+    StaticModel* object = node_->CreateComponent<StaticModel>();
+    object->SetModel(cache->GetResource<Model>("Models/"+mesh_));
+    object->SetMaterial(cache->GetResource<Material>("Materials/Jack.xml"));
+    object->SetCastShadows(true);
 }
 
-void Gun01::FixedUpdate(float timeStep)
+/*void Gun01::FixedUpdate(float timeStep)
 {
     
-}
-void Gun01::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
-{
-    using namespace NodeCollision;
+}*/
 
-    Weapon::HandleNodeCollision(eventType, eventData);
-    
-}
 void Gun01::SpawnProjectile()
 {
-    Weapon::SpawnProjectile();
+    Vector3 pos = node_->GetWorldPosition();
+
+    Vector3 offpos = pos+Vector3(0.0f,0.0f,1.0f);
+
+
+    Node* projectileNode_ = node_->GetScene()->CreateChild("projectile");
+    projectileNode_->SetPosition(offpos);
+
+    Projectile* projectile_ = projectileNode_->CreateComponent<Projectile>();
+    projectile_->Setup(Vector3(0.0f,0.0f,1.0f));
    
 }
 
