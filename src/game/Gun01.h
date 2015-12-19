@@ -15,8 +15,6 @@ class Scene;
 
 }
 
-using namespace Urho3D;
-
 class Gun01 : public Weapon
 {
 

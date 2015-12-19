@@ -34,7 +34,7 @@
 #include "game/Gun01.h"
 #include "framework/src/Projectile.h"
 #include "game/Character.h"
-
+#include "game/CustomGeo.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -94,6 +94,11 @@ void Main::Start()
     Gun01* weapon = weaponNode->CreateComponent<Gun01>();
     weapon->Setup();
     character_->EquipWeapon(weapon);
+
+    //---lets try this custom geo out
+    Node* customgeoNode = scene_->CreateChild("customgeo");
+    CustomGeo* cg = new CustomGeo(context_);
+    cg->Setup(customgeoNode);
 
     //----my first enemy
     //enemyNode_ = scene_->CreateChild("Jack");
