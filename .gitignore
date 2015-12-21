@@ -8,5 +8,7 @@ editor.sh
 editor.bat
 link.sh
 link.bat
+launch.sh
+launch.bat
 
 bin

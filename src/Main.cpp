@@ -21,7 +21,6 @@
 #include <Urho3D/UI/UI.h>
 #include <Urho3D/Resource/XMLFile.h>
 
-
 #include <Urho3D/Core/CoreEvents.h>
 #include <Urho3D/UI/Font.h>
 #include <Urho3D/Core/ProcessUtils.h>
@@ -96,9 +95,9 @@ void Main::Start()
     character_->EquipWeapon(weapon);
 
     //---lets try this custom geo out
-    Node* customgeoNode = scene_->CreateChild("customgeo");
-    CustomGeo* cg = new CustomGeo(context_);
-    cg->Setup(customgeoNode);
+    //Node* customgeoNode = scene_->CreateChild("customgeo");
+    //CustomGeo* cg = new CustomGeo(context_);
+    //cg->Setup(customgeoNode);
 
     //----my first enemy
     //enemyNode_ = scene_->CreateChild("Jack");

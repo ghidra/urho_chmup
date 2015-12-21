@@ -25,6 +25,8 @@
 
 #include "ChmupDebugLevel.h"
 
+#include "../framework/src/SimplexNoise.h"
+
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
 
@@ -79,4 +81,28 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     }
 
     cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+
+    //lets test some simplex noise
+    SimplexNoise* noise = new SimplexNoise(context_);
+    Node* b = scene_->CreateChild("boxes");
+    for (unsigned i = 0; i<20; ++i)
+    {
+        Node* nb = b->CreateChild("b");
+        Vector2 rx = Vector2(float(Random(999)),float(Random(999)));
+        Vector2 rz = Vector2(float(Random(999)),float(Random(999)));
+        Vector2 scl = Vector2(0.01f,0.01f);
+        float nx = noise->Get(rx,scl);
+        float nz = noise->Get(rz,scl);
+        nb->SetPosition(Vector3(nx,0.0f,nz));
+
+        StaticModel* boxObject = nb->CreateComponent<StaticModel>();
+        boxObject->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
+        boxObject->SetMaterial(cache->GetResource<Material>("Materials/Stone.xml"));
+        boxObject->SetCastShadows(true);
+
+        //URHO3D_LOGWARNING(String(   noise->Get(Vector2(float(Random(999)),float(Random(999))))  ));
+        //URHO3D_LOGWARNING(String(rz));
+        //URHO3D_LOGWARNING(String(Vector3(nx,0.0f,nz)));
+    }
+
 }
