@@ -85,24 +85,25 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     //lets test some simplex noise
     SimplexNoise* noise = new SimplexNoise(context_);
     Node* b = scene_->CreateChild("boxes");
-    for (unsigned i = 0; i<20; ++i)
+    for (unsigned i = 0; i<100; ++i)
     {
         Node* nb = b->CreateChild("b");
-        Vector2 rx = Vector2(float(Random(999)),float(Random(999)));
-        Vector2 rz = Vector2(float(Random(999)),float(Random(999)));
-        Vector2 scl = Vector2(0.01f,0.01f);
-        float nx = noise->Get(rx,scl);
-        float nz = noise->Get(rz,scl);
-        nb->SetPosition(Vector3(nx,0.0f,nz));
+
+        //just spread them around
+        //Vector2 npos = noise->Gradient( Vector2(float(i)*0.33,0.0f) ,3.3f,0.3f,0.0f); 
+        //nb->SetPosition(Vector3(npos.x_,0.0f,npos.y_)*5.0f);
+
+
+        //lets make a grid and see what noise does to them
+        Vector3 newpos = Vector3(float(i%10),0.0f,float(i/10))*1.5f;
+        Vector2 npos = noise->Gradient( Vector2(newpos.x_,newpos.z_) ,0.01f,0.12f,0.0f);
+        Vector3 npos3 = Vector3(npos.x_,0.0f,npos.y_);
+        nb->SetPosition(newpos+npos3);
 
         StaticModel* boxObject = nb->CreateComponent<StaticModel>();
         boxObject->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
         boxObject->SetMaterial(cache->GetResource<Material>("Materials/Stone.xml"));
         boxObject->SetCastShadows(true);
-
-        //URHO3D_LOGWARNING(String(   noise->Get(Vector2(float(Random(999)),float(Random(999))))  ));
-        //URHO3D_LOGWARNING(String(rz));
-        //URHO3D_LOGWARNING(String(Vector3(nx,0.0f,nz)));
     }
 
 }
