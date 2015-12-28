@@ -23,14 +23,14 @@ CustomGeo::~CustomGeo(){}
 
 void CustomGeo::AddPoint(const Vector3 p){
 	points_.Push(p);
-
-	if(p.x_>bbmax_.x_)bbmax_.x_=p.x_;
-	if(p.y_>bbmax_.y_)bbmax_.y_=p.y_;
-	if(p.z_>bbmax_.z_)bbmax_.z_=p.z_;
-	if(p.x_<bbmin_.x_)bbmin_.x_=p.x_;
-	if(p.y_<bbmin_.y_)bbmin_.y_=p.y_;
-	if(p.z_<bbmin_.z_)bbmin_.z_=p.z_;
+	FitBB(p);
 }
+
+/*void CustomGeo::SetPoint(const unsigned short i, const Vector3 p)
+{
+	points_[i] = p;
+	FitBB(p);
+}*/
 
 void CustomGeo::AddTriangle(const unsigned p1, const unsigned p2, const unsigned p3)
 {
@@ -93,6 +93,16 @@ void CustomGeo::Build(Node* node)
 	newnode->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
 	StaticModel* object = newnode->CreateComponent<StaticModel>();
 	object->SetModel(fromScratchModel);
+}
+
+void CustomGeo::FitBB(const Vector3 p)
+{
+	if(p.x_>bbmax_.x_)bbmax_.x_=p.x_;
+	if(p.y_>bbmax_.y_)bbmax_.y_=p.y_;
+	if(p.z_>bbmax_.z_)bbmax_.z_=p.z_;
+	if(p.x_<bbmin_.x_)bbmin_.x_=p.x_;
+	if(p.y_<bbmin_.y_)bbmin_.y_=p.y_;
+	if(p.z_<bbmin_.z_)bbmin_.z_=p.z_;
 }
 
 Vector3 CustomGeo::Normal(const Vector3& p1, const Vector3& p2, const Vector3& p3)
