@@ -3,10 +3,6 @@
 
 #include "LevelGen.h"
 
-#include <Urho3D/DebugNew.h>
-#include <Urho3D/IO/Log.h>
-#include <Urho3D/Engine/DebugHud.h>
-
 LevelGen::LevelGen(Context* context):
     Object(context)
 {
@@ -19,45 +15,18 @@ void LevelGen::Setup(Node* node)
 	
 	node_ = node;
 
-	/*
-	0.0f, 0.5f, 0.0f
-        	0.5f, -0.5f, 0.5f
-        	0.5f, -0.5f, -0.5f
-
-        	0.0f, 0.5f, 0.0f
-        	-0.5f, -0.5f, 0.5f
-        	0.5f, -0.5f, 0.5f
-
-        	0.0f, 0.5f, 0.0f
-        	-0.5f, -0.5f, -0.5f
-        	-0.5f, -0.5f, 0.5f
-
-        	0.0f, 0.5f, 0.0f
-        	0.5f, -0.5f, -0.5f
-        	-0.5f, -0.5f, -0.5f
-
-        	0.5f, -0.5f, -0.5f
-        	0.5f, -0.5f, 0.5f
-        	-0.5f, -0.5f, 0.5f
-
-        	0.5f, -0.5f, -0.5f
-        	-0.5f, -0.5f, 0.5f
-        	-0.5f, -0.5f, -0.5f
-        	*/
-
 	customgeo_->AddPoint(Vector3(0.0f,0.5f,0.0f));//0
-	customgeo_->AddPoint(Vector3(0.5f,-0.5f,0.0f));//1
+	customgeo_->AddPoint(Vector3(0.5f,-0.5f,0.5f));//1
 	customgeo_->AddPoint(Vector3(0.5f,-0.5f,-0.5f));//2
 	customgeo_->AddPoint(Vector3(-0.5f,-0.5f,0.5f));//3
-	customgeo_->AddPoint(Vector3(0.5f, -0.5f, 0.5f));//4
-	customgeo_->AddPoint(Vector3(-0.5f, -0.5f, -0.5f));//5
+	customgeo_->AddPoint(Vector3(-0.5f,-0.5f,-0.5f));//4
 
-	customgeo_->AddTri(0,1,2);
-	customgeo_->AddTri(0,3,4);
-	customgeo_->AddTri(0,5,3);
-	customgeo_->AddTri(0,2,5);
-	customgeo_->AddTri(2,4,3);
-	customgeo_->AddTri(2,3,5);
+	customgeo_->AddTriangle(0,1,2);
+	customgeo_->AddTriangle(0,3,1);
+	customgeo_->AddTriangle(0,4,3);
+	customgeo_->AddTriangle(0,2,4);
+	customgeo_->AddTriangle(2,1,3);
+	customgeo_->AddTriangle(2,3,4);
 
-	customgeo_->Setup(node_);
+	customgeo_->Build(node_);
 }
