@@ -33,7 +33,7 @@
 #include "game/Gun01.h"
 #include "framework/src/Projectile.h"
 #include "game/Character.h"
-#include "game/CustomGeo.h"
+//#include "game/CustomGeo.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>

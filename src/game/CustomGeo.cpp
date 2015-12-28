@@ -21,12 +21,43 @@ CustomGeo::CustomGeo(Context* context):
 }
 CustomGeo::~CustomGeo(){}
 
+void CustomGeo::AddPoint(const Vector3 p){
+	points_.Push(p);
+}
+
+void CustomGeo::AddTri(const unsigned p1, const unsigned p2, const unsigned p3)
+{
+	ids_.Push(p1);
+	ids_.Push(p2);
+	ids_.Push(p3);
+	normals_.Push(Normal(points_[p1],points_[p2],points_[p3]));
+}
+
 void CustomGeo::Setup(Node* node)
 {
 	node_ = node;
+
+	unsigned num = ids_.Size();
+	const unsigned numVertices = num;
+	float vertexData[num*6];
+	unsigned short indexData[num];
+
+	for(unsigned i = 0; i < numVertices; ++i)
+	{
+		unsigned ii = i*6;
+		vertexData[ii] = points_[ids_[i]].x_;
+		vertexData[ii+1] = points_[ids_[i]].y_;
+		vertexData[ii+2] = points_[ids_[i]].z_;
+
+		vertexData[ii+4] = normals_[ids_[i]].x_;
+		vertexData[ii+5] = normals_[ids_[i]].y_;
+		vertexData[ii+6] = normals_[ids_[i]].z_;
+
+		indexData[i]=i;
+	}
 	// Finally create one model (pyramid shape) and a StaticModel to display it from scratch
     	// Note: there are duplicated vertices to enable face normals. We will calculate normals programmatically
-        	const unsigned numVertices = 18;
+        	/*const unsigned numVertices = 18;
 
         	float vertexData[] = {
            	 // Position             Normal
@@ -78,7 +109,7 @@ void CustomGeo::Setup(Node* node)
 	           //Vector3 edge2 = v1 - v3;
 	           //n1 = n2 = n3 = edge1.CrossProduct(edge2).Normalized();
 	           n1 = n2 = n3 = Normal(v1,v2,v3);
-        	}
+        	}*/
 
         	SharedPtr<Model> fromScratchModel(new Model(context_));
         	SharedPtr<VertexBuffer> vb(new VertexBuffer(context_));

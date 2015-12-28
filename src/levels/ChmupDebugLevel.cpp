@@ -25,6 +25,7 @@
 
 #include "ChmupDebugLevel.h"
 
+#include "LevelGen.h"
 #include "../framework/src/SimplexNoise.h"
 
 #include <Urho3D/DebugNew.h>
@@ -105,5 +106,10 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
         boxObject->SetMaterial(cache->GetResource<Material>("Materials/Stone.xml"));
         boxObject->SetCastShadows(true);
     }
+
+    ////////testing the level gen code
+    LevelGen* level_ = new LevelGen(context_);
+    Node* lnode = scene_->CreateChild("levelgen");
+    level_->Setup(lnode); 
 
 }
