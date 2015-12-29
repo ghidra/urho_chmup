@@ -84,7 +84,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
 
     //lets test some simplex noise
-    SimplexNoise* noise = new SimplexNoise(context_);
+    /*SimplexNoise* noise = new SimplexNoise(context_);
     Node* b = scene_->CreateChild("boxes");
     for (unsigned i = 0; i<100; ++i)
     {
@@ -105,7 +105,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
         boxObject->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
         boxObject->SetMaterial(cache->GetResource<Material>("Materials/Stone.xml"));
         boxObject->SetCastShadows(true);
-    }
+    }*/
 
     ////////testing the level gen code
     LevelGen* level_ = new LevelGen(context_);

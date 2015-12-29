@@ -22,7 +22,7 @@ public:
 	//void SetPoint(const unsigned short i, const Vector3 p);
 
 	void AddTriangle(const unsigned p1, const unsigned p2, const unsigned p3);
-	void Build(Node* node);
+	void Build(Node* node, const bool rigid = false);
 
 private:
 

@@ -19,7 +19,7 @@ public:
    	LevelGen(Context* context);
 	~LevelGen();
 
-	void Setup(Node* node, const float tilescale = 5.0f );
+	void Setup(Node* node, const float tilescale = 20.0f );
 
 private:
 
@@ -29,6 +29,7 @@ private:
 
 	CustomGeo* Tile(const Vector3 offset = Vector3(0.0f,0.0f,0.0f) );
 	CustomGeo* Split(const Vector3 offset = Vector3(0.0f,0.0f,0.0f) );
+	void Grid(CustomGeo* cg, const Vector3 offset, const unsigned short quad=0);
 
 	float tilescale_;
 
