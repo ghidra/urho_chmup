@@ -27,8 +27,8 @@ private:
 	PODVector<Node*> nodes_;//nodes to hold each tile
 	PODVector<CustomGeo*> tiles_;
 
-	CustomGeo* Tile(const Vector3 offset = Vector3() );
-	CustomGeo* Split(const Vector3 offset = Vector3() );
+	CustomGeo* Tile(const Vector3 offset = Vector3(0.0f,0.0f,0.0f) );
+	CustomGeo* Split(const Vector3 offset = Vector3(0.0f,0.0f,0.0f) );
 
 	float tilescale_;
 

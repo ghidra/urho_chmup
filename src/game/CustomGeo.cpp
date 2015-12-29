@@ -90,7 +90,7 @@ void CustomGeo::Build(Node* node)
 	fromScratchModel->SetBoundingBox(BoundingBox(bbmin_, bbmax_));
 
 	Node* newnode = node_->GetScene()->CreateChild("FromScratchObject");
-	newnode->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
+	//newnode->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
 	StaticModel* object = newnode->CreateComponent<StaticModel>();
 	object->SetModel(fromScratchModel);
 }
@@ -108,7 +108,7 @@ void CustomGeo::FitBB(const Vector3 p)
 Vector3 CustomGeo::Normal(const Vector3& p1, const Vector3& p2, const Vector3& p3)
 {
 	Vector3 edge1 = p1 - p2;
-           Vector3 edge2 = p1 - p3;
+           	Vector3 edge2 = p1 - p3;
 	return edge1.CrossProduct(edge2).Normalized();
 }
 

@@ -65,7 +65,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     // Set cascade splits at 10, 50 and 200 world units, fade shadows out at 80% of maximum shadow distance
     light->SetShadowCascade(CascadeParameters(10.0f, 50.0f, 200.0f, 0.0f, 0.8f));
 
-    {
+    /*{
 
         Node* floorNode = scene_->CreateChild("Floor");
         floorNode->SetPosition(Vector3(0.0f, -1.0f, 0.0f));
@@ -79,7 +79,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
         body->SetCollisionLayer(32);
         body->SetCollisionMask(63);
         shape->SetBox(Vector3::ONE);
-    }
+    }*/
 
     cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
 
@@ -111,5 +111,4 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     LevelGen* level_ = new LevelGen(context_);
     Node* lnode = scene_->CreateChild("levelgen");
     level_->Setup(lnode); 
-
 }
