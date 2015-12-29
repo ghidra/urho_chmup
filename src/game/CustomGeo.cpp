@@ -43,7 +43,7 @@ void CustomGeo::AddTriangle(const unsigned p1, const unsigned p2, const unsigned
 	normals_.Push(Normal(points_[p1],points_[p2],points_[p3]));
 }
 
-void CustomGeo::Build(Node* node, const bool rigid)
+void CustomGeo::Build(Node* node, const bool rigid, const unsigned layer, const unsigned mask)
 {
 	node_ = node;
 
@@ -96,14 +96,14 @@ void CustomGeo::Build(Node* node, const bool rigid)
 	//newnode->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
 	StaticModel* object = newnode->CreateComponent<StaticModel>();
 	object->SetModel(fromScratchModel);
-	object->SetCastShadows(true);
+	//object->SetCastShadows(true);
 
 	//make a triangle mesh rigid shape if flagged
 	if(rigid)
 	{
 		RigidBody* body_ = node_->CreateComponent<RigidBody>();
-    	//body_->SetCollisionLayer(collision_layer_);
-    	//body_->SetCollisionMask(collision_mask_);
+    	body_->SetCollisionLayer(layer);
+    	body_->SetCollisionMask(mask);
     	body_->SetMass(0.0f);
     	//body_->SetFriction(friction);
     	CollisionShape* shape_ = node_->CreateComponent<CollisionShape>();

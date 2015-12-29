@@ -42,6 +42,7 @@ void Character::Setup()
     shape_->SetCapsule(3.0f, 10.0f, Vector3(0.0f, 5.0f, 0.0f));
 
     body_->SetUseGravity(false);//dont use gravity
+    body_->SetLinearFactor(Vector3(1.0f,0.0f,1.0f));
 
     SetState( new StateCharacterFlying(context_) );
 }
