@@ -23,6 +23,7 @@ public:
 
 	void AddTriangle(const unsigned p1, const unsigned p2, const unsigned p3);
 	void Build(Node* node, const bool rigid = false, const unsigned layer = 0, const unsigned mask = 0);
+	Node* GetNode(){return node_;};
 
 private:
 

@@ -92,9 +92,9 @@ void CustomGeo::Build(Node* node, const bool rigid, const unsigned layer, const 
 	fromScratchModel->SetGeometry(0, 0, geom);
 	fromScratchModel->SetBoundingBox(BoundingBox(bbmin_, bbmax_));
 
-	Node* newnode = node_->GetScene()->CreateChild("FromScratchObject");
+	//Node* newnode = node_->GetScene()->CreateChild("FromScratchObject");
 	//newnode->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
-	StaticModel* object = newnode->CreateComponent<StaticModel>();
+	StaticModel* object = node_->CreateComponent<StaticModel>();
 	object->SetModel(fromScratchModel);
 	//object->SetCastShadows(true);
 

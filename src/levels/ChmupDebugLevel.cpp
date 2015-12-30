@@ -81,7 +81,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
         shape->SetBox(Vector3::ONE);
     }*/
 
-    cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+    //cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
 
     //lets test some simplex noise
     /*SimplexNoise* noise = new SimplexNoise(context_);
@@ -110,5 +110,5 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     ////////testing the level gen code
     LevelGen* level_ = new LevelGen(context_);
     Node* lnode = scene_->CreateChild("levelgen");
-    level_->Setup(lnode); 
+    level_->Setup(lnode,cameraNode_); 
 }
