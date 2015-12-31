@@ -21,7 +21,10 @@ public:
 	//PODVector<Vector3>* GetPoints(){return &points_;};
 	//void SetPoint(const unsigned short i, const Vector3 p);
 
-	void AddTriangle(const unsigned p1, const unsigned p2, const unsigned p3);
+	void AddTriangle(const unsigned short p1, const unsigned short p2, const unsigned short p3);
+	void Surface(const unsigned short slices, const unsigned short stacks, Vector3 (*fptr)(void*, float, float), void* context);
+	void Subdivide(const unsigned short depth=1);
+	void GetSphere(const unsigned short u, const unsigned short v);
 	void Build(Node* node, const bool rigid = false, const unsigned layer = 0, const unsigned mask = 0);
 	Node* GetNode(){return node_;};
 
@@ -30,6 +33,9 @@ private:
 	Vector3 Normal(const Vector3& p1, const Vector3& p2, const Vector3& p3);
 	void FitBB(const Vector3 p);
 	void Debug(const String label, const String value);
+	void DoSubdivide();//this does the actual subdivision, called from Subdivide
+
+	Vector3 Sphere(void* context, const float u, const float v);
 
 	SharedPtr<Node> node_;
 

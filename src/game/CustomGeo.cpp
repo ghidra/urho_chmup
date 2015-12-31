@@ -35,14 +35,71 @@ void CustomGeo::AddPoint(const Vector3 p){
 	FitBB(p);
 }*/
 
-void CustomGeo::AddTriangle(const unsigned p1, const unsigned p2, const unsigned p3)
+void CustomGeo::AddTriangle(const unsigned short p1, const unsigned short p2, const unsigned short p3)
 {
 	ids_.Push(p1);
 	ids_.Push(p2);
 	ids_.Push(p3);
 	normals_.Push(Normal(points_[p1],points_[p2],points_[p3]));
 }
+//http://stackoverflow.com/questions/12662891/c-passing-member-function-as-argument
+void CustomGeo::Surface(const unsigned short slices, const unsigned short stacks, Vector3 (*fptr)(void*, float, float), void* context)
+{
+	for(unsigned i=0; i<slices+1; ++i)
+	{
+		float theta = float(i)*3.1415/float(slices);
+		for(unsigned j=0; j<stacks; ++j)
+		{
+			float phi = float(j)*2.0*3.1415/float(stacks);
+			Vector3 p = fptr(context,theta,phi);
+			AddPoint(p);
+		}
+	}
+	unsigned short v = 0;
+	for(unsigned i=0; i<slices; ++i)
+	{
+		for(unsigned j=0; j<stacks; ++j)
+		{
+			unsigned short next = (j+1)%stacks;
+			AddTriangle(v+j,v+next,v+j+stacks);
+			AddTriangle(v+next,v+next+stacks,v+j+stacks);
+		}
+		v+=stacks;
+	}
+}
+void CustomGeo::Subdivide(const unsigned short depth){
+	for(unsigned i=0; i<depth; ++i)
+	{
+		DoSubdivide();
+	}
+}
+void CustomGeo::DoSubdivide(){
+	unsigned tris = ids_.Size()/3;
+	for(unsigned fi=0; fi<tris; ++fi)
+	{
+		//make new points
+		unsigned fii = fi*3;
+		Vector3 a = points_[ids_[fii]];
+		Vector3 b = points_[ids_[fii+1]];
+		Vector3 c = points_[ids_[fii+3]];
+		points_.Push( a+(Vector3(b-a)*0.5f) );
+		points_.Push( b+(Vector3(c-b)*0.5f) );
+		points_.Push( c+(Vector3(a-c)*0.5f) );
+		
+		//add new ids
+		unsigned i = points_.Size()-3;
+		unsigned j = i+1;
+		unsigned k = i+2;
+		AddTriangle(i,j,k);
+		AddTriangle(ids_[fii],i,k);
+		AddTriangle(i,ids_[fii+1],j);
 
+		ids_[fii]=k;
+		ids_[fii+1]=j;
+		normals_[fi] = Normal(points_[k],points_[j],points_[ids_[fii+2]]);
+
+	}
+}
 void CustomGeo::Build(Node* node, const bool rigid, const unsigned layer, const unsigned mask)
 {
 	node_ = node;
@@ -127,7 +184,16 @@ Vector3 CustomGeo::Normal(const Vector3& p1, const Vector3& p2, const Vector3& p
            	Vector3 edge2 = p1 - p3;
 	return edge1.CrossProduct(edge2).Normalized();
 }
-
+///-----surfaces
+Vector3 CustomGeo::Sphere(void* context, const float u, const float v)
+{
+	return Vector3::ZERO;
+}
+void CustomGeo::GetSphere(const unsigned short u, const unsigned short v)
+{
+	//Surface(u,v,&Sphere,0);
+}
+//------debug
 void CustomGeo::Debug(const String label, const String value){
     GetSubsystem<DebugHud>()->SetAppStats(label+" : ", value );
 }

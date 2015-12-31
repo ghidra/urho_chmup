@@ -89,6 +89,8 @@ CustomGeo* LevelGen::Grid(const Vector3 ws_offset)
     nodes_.Push( node_->CreateChild("tile") );
     nodes_[nodes_.Size()-1]->SetPosition(ws_offset);
 
+    //cg->Subdivide();
+
     cg->Build(nodes_[nodes_.Size()-1],true,32,63);
     
     return cg;
