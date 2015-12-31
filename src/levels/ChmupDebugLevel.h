@@ -34,6 +34,10 @@ protected:
     SharedPtr<Scene> scene_;
     SharedPtr<Node> cameraNode_;
     SharedPtr<Character> character_;
+    SharedPtr<Node> light_;
+
+private:
+    void HandleUpdate(StringHash eventType, VariantMap& eventData);
    
 };
 #endif

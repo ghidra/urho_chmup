@@ -56,10 +56,11 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     zone->SetFogEnd(300.0f);
 
     // Create a directional light to the world. Enable cascaded shadows on it
-    Node* lightNode = scene_->CreateChild("DirectionalLight");
-    lightNode->SetDirection(Vector3(0.6f, -1.0f, 0.8f));
-    Light* light = lightNode->CreateComponent<Light>();
+    light_ = scene_->CreateChild("DirectionalLight");
+    light_->SetDirection( Vector3(0.8f, -1.0f, 0.2f).Normalized() );
+    Light* light = light_->CreateComponent<Light>();
     light->SetLightType(LIGHT_DIRECTIONAL);
+    //light->SetLightType(LIGHT_SPOT);
     light->SetCastShadows(true);
     light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
     // Set cascade splits at 10, 50 and 200 world units, fade shadows out at 80% of maximum shadow distance
@@ -111,4 +112,28 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     LevelGen* level_ = new LevelGen(context_);
     Node* lnode = scene_->CreateChild("levelgen");
     level_->Setup(lnode,cameraNode_); 
+
+    SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(ChmupDebugLevel, HandleUpdate));
+}
+
+void ChmupDebugLevel::HandleUpdate(StringHash eventType, VariantMap& eventData)
+{
+    //In here, we query the camera position, and determine if wee need to geneate new tiles, splits etc, while removing old ones
+    /*Vector3 char_pos = character_->GetWorldPosition();
+
+    for (unsigned i = 0; i<tiles_.Size(); ++i)
+    {
+        Vector3 tile_pos = tiles_[i]->GetNode()->GetWorldPosition();
+        if( tile_pos.z_ < cam_pos.z_-40.0f )
+        {
+            //remove one
+            tiles_[i]->GetNode()->Remove();
+            tiles_.Erase(i);
+            //and make a new one
+            tiles_.Push( Grid(Vector3(0.0,-4.0f,0.0f)+(Vector3(0.0f,0.0f,tilescale_)*(4.0f*float(segments_)))) );
+            ++segments_;
+        }
+    }
+    Vector3 t = tiles_[2]->GetNode()->GetWorldPosition();
+    //URHO3D_LOGWARNING(String(t.z_));*/
 }

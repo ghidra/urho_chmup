@@ -96,7 +96,7 @@ void CustomGeo::Build(Node* node, const bool rigid, const unsigned layer, const 
 	//newnode->SetPosition(Vector3(0.0f, 3.0f, 0.0f));
 	StaticModel* object = node_->CreateComponent<StaticModel>();
 	object->SetModel(fromScratchModel);
-	//object->SetCastShadows(true);
+	object->SetCastShadows(true);
 
 	//make a triangle mesh rigid shape if flagged
 	if(rigid)

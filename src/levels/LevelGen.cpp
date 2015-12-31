@@ -132,8 +132,8 @@ void LevelGen::Tile(CustomGeo* cg, Vector3 ws_offset, Vector3 offset, const unsi
             //rotate if we are a wall
             pt = rot*(pts[i]+(Vector3(tilescale_,0.0f,0.0f)*w) );
         }
-        Vector3 large = noise_->Gradient( pt +offset+ws_offset,0.1f,0.005f,5.0f)*Vector3(35.0f,2.0f,15.0f);
-        Vector3 medium = noise_->Gradient( pt +offset+ws_offset,0.01f,0.12f,0.0f)*Vector3(1.0f,2.0f,1.0f);
+        Vector3 large = noise_->Gradient( pt +offset+ws_offset,5000.0f,0.005f,5.0f)*Vector3(15.0f,2.0f,5.0f);
+        Vector3 medium = noise_->Gradient( pt +offset+ws_offset,0.01f,0.12f,0.0f)*Vector3(0.25f,0.25f,0.25f);
         cg->AddPoint(pt+offset+large+medium);
     }
 
