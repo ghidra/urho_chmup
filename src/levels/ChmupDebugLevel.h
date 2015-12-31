@@ -27,14 +27,15 @@ public:
 
     ChmupDebugLevel(Context* context);
 
-    virtual void Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode);
+    void Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode);
+    SharedPtr<Node> GetCharacterNode(){return characterNode_;};
 
 protected:
 
-    SharedPtr<Scene> scene_;
+    //SharedPtr<Scene> scene_;
     SharedPtr<Node> cameraNode_;
-    SharedPtr<Character> character_;
-    SharedPtr<Node> light_;
+    SharedPtr<Node> characterNode_;
+    //SharedPtr<Node> light_;
 
 private:
     void HandleUpdate(StringHash eventType, VariantMap& eventData);

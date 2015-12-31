@@ -27,6 +27,8 @@
 
 #include "LevelGen.h"
 #include "../framework/src/SimplexNoise.h"
+#include "../game/Character.h"
+#include "../game/Gun01.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -42,47 +44,56 @@ ChmupDebugLevel::ChmupDebugLevel(Context* context) :
 void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
 {
 
-    scene_ = scene;
+    //scene_ = scene;
     cameraNode_ = cameraNode;
 
     ResourceCache* cache = GetSubsystem<ResourceCache>();
 
-    Node* zoneNode = scene_->CreateChild("Zone");
-    Zone* zone = zoneNode->CreateComponent<Zone>();
-    zone->SetBoundingBox(BoundingBox(-1000.0f, 1000.0f));
-    zone->SetAmbientColor(Color(0.15f, 0.15f, 0.15f));
-    zone->SetFogColor(Color(0.5f, 0.5f, 0.7f));
-    zone->SetFogStart(100.0f);
-    zone->SetFogEnd(300.0f);
+    //saves zones for later when i know what to do with them
+
+    //Node* zoneNode = scene_->CreateChild("Zone");
+    //Zone* zone = zoneNode->CreateComponent<Zone>();
+    //zone->SetBoundingBox(BoundingBox(-1000.0f, 1000.0f));
+    //zone->SetAmbientColor(Color(0.15f, 0.15f, 0.15f));
+    //zone->SetFogColor(Color(0.5f, 0.5f, 0.7f));
+    //zone->SetFogStart(20.0f);
+    //zone->SetFogEnd(60.0f);
 
     // Create a directional light to the world. Enable cascaded shadows on it
-    light_ = scene_->CreateChild("DirectionalLight");
-    light_->SetDirection( Vector3(0.8f, -1.0f, 0.2f).Normalized() );
+    
+
+    //------
+    characterNode_ = scene->CreateChild("Jack");
+    Character* character_ = characterNode_->CreateComponent<Character>();
+    character_->Setup();
+    //create another node for the weapon
+    Node* weaponNode = characterNode_->CreateChild("Weapon");
+    weaponNode->SetPosition(Vector3(0.5f, 1.0f, 0.0f));
+    Gun01* weapon = weaponNode->CreateComponent<Gun01>();
+    weapon->Setup();
+    character_->EquipWeapon(weapon);
+    //cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+
+    //light attached to the character
+    Node* light_ = characterNode_->CreateChild("SpotLight");
+    //light_->SetDirection( Vector3(0.8f, -1.0f, 0.2f).Normalized() );
     Light* light = light_->CreateComponent<Light>();
-    light->SetLightType(LIGHT_DIRECTIONAL);
-    //light->SetLightType(LIGHT_SPOT);
+    //light->SetLightType(LIGHT_DIRECTIONAL);
+    light->SetLightType(LIGHT_SPOT);
+    light->SetBrightness(10.0f);
     light->SetCastShadows(true);
     light->SetShadowBias(BiasParameters(0.00025f, 0.5f));
     // Set cascade splits at 10, 50 and 200 world units, fade shadows out at 80% of maximum shadow distance
     light->SetShadowCascade(CascadeParameters(10.0f, 50.0f, 200.0f, 0.0f, 0.8f));
+    light->SetRange(100.0f);
+    light->SetFov(90.0f);
+    light->SetAspectRatio(1.75f);
 
-    /*{
-
-        Node* floorNode = scene_->CreateChild("Floor");
-        floorNode->SetPosition(Vector3(0.0f, -1.0f, 0.0f));
-        floorNode->SetScale(Vector3(1000.0f, 1.0f, 1000.0f));
-        StaticModel* floorObject = floorNode->CreateComponent<StaticModel>();
-        floorObject->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
-        floorObject->SetMaterial(cache->GetResource<Material>("Materials/StoneTiled.xml"));
-
-        RigidBody* body = floorNode->CreateComponent<RigidBody>();
-        CollisionShape* shape = floorNode->CreateComponent<CollisionShape>();
-        body->SetCollisionLayer(32);
-        body->SetCollisionMask(63);
-        shape->SetBox(Vector3::ONE);
-    }*/
-
-    //cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));
+    Node* light2_ = characterNode_->CreateChild("SpotLight");
+    light2_->SetPosition(Vector3(0.0f,1.0f,1.0f));
+    //light_->SetDirection( Vector3(0.8f, -1.0f, 0.2f).Normalized() );
+    Light* light2 = light2_->CreateComponent<Light>();
+    light2->SetLightType(LIGHT_POINT);
 
     //lets test some simplex noise
     /*SimplexNoise* noise = new SimplexNoise(context_);
@@ -110,7 +121,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
 
     ////////testing the level gen code
     LevelGen* level_ = new LevelGen(context_);
-    Node* lnode = scene_->CreateChild("levelgen");
+    Node* lnode = scene->CreateChild("levelgen");
     level_->Setup(lnode,cameraNode_); 
 
     SubscribeToEvent(E_UPDATE, URHO3D_HANDLER(ChmupDebugLevel, HandleUpdate));

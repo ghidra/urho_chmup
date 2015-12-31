@@ -29,6 +29,6 @@ public:
 
 private:
 	ChmupDebugLevel* level_;
-    	SharedPtr<Node> characterNode_;
+    //SharedPtr<Node> characterNode_;
 };
 #endif

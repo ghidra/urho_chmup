@@ -1,6 +1,18 @@
 left off:
 
--give ship a weapon, simple pea shooter
+random seed in BG generation
+
+add some obstacles that can be shot out of the way
+projectiles need some more logic in framework (die after amount of time, die after distance travelled)
+projectiles need to not be effected by gravity
+need to do a typewritter like effect on large bg, so that character is near origin when entering zones.
+ -maybe look at a zone manager, that does some of that for me
+
+ more procedural bg generation algos
+
+ start adding in some cool lighting effects
+ procedural ship
+ with lights along the geometry.
 
 add some pickups in the scene
 -specifically weapon pickups
@@ -12,8 +24,6 @@ ship can have pick ups that effects its flight speed, changes its over all look
 -wings
 -rockets
 -etc
-
--prcedural BG
 
 -rougelike elements
 

@@ -12,6 +12,7 @@
 #include <Urho3D/Input/Input.h>
 #include <Urho3D/Input/InputEvents.h>
 #include <Urho3D/Graphics/Renderer.h>
+#include <Urho3D/Graphics/Zone.h>
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Scene/SceneEvents.h>
@@ -82,28 +83,17 @@ void Main::Start()
 
     //----------------
 
-    characterNode_ = scene_->CreateChild("Jack");
-    Character* character_ = characterNode_->CreateComponent<Character>();
-    character_->GetNode()->SetPosition(Vector3(0.0f, 1.0f, 0.0f));
-    character_->Setup();
+    //hook the controller up and set the camera to follow the character
+    SharedPtr<Node> characterNode_ = level_->GetCharacterNode();
+    Character* character_ = characterNode_->GetComponent<Character>();
     character_->Possess(applicationInput_);
-    //create another node for the weapon
-    Node* weaponNode = characterNode_->CreateChild("Weapon");
-    weaponNode->SetPosition(Vector3(0.5f, 1.0f, 0.0f));
-    Gun01* weapon = weaponNode->CreateComponent<Gun01>();
-    weapon->Setup();
-    character_->EquipWeapon(weapon);
-
-    //---lets try this custom geo out
-    //Node* customgeoNode = scene_->CreateChild("customgeo");
-    //CustomGeo* cg = new CustomGeo(context_);
-    //cg->Setup(customgeoNode);
-
-    //----my first enemy
-    //enemyNode_ = scene_->CreateChild("Jack");
-    //Character* enemy_ = enemyNode_->CreateComponent<Character>();
-
     applicationInput_->SetCameraTarget(characterNode_);
+
+    ///---mess with default zone
+    Renderer* renderer = GetSubsystem<Renderer>();
+    Zone* dzone = renderer->GetDefaultZone();
+    dzone->SetFogStart(20.0f);
+    dzone->SetFogEnd(60.0f);
 
     SubscribeToEvents();
 }
