@@ -1,5 +1,5 @@
-#ifndef CHARACTER_H
-#define CHARACTER_H
+#ifndef OBSTACLE_H
+#define OBSTACLE_H
 
 #pragma once
 
@@ -15,24 +15,20 @@ class Scene;
 
 }
 
-class Character : public Pawn
+class Obstacle : public Pawn
 {
 
-    URHO3D_OBJECT(Character,Pawn);
+    URHO3D_OBJECT(Obstacle,Pawn);
 
 public:
 
-    Character(Context* context);
+    Obstacle(Context* context);
 
     static void RegisterObject(Context* context);
 
     virtual void Start();
     virtual void FixedUpdate(float timeStep);
     virtual void Setup();
-
-private:
-    
-    void HandleSceneDrawableUpdateFinished(StringHash eventType, VariantMap& eventData);
    
 };
 #endif

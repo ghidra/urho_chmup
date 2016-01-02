@@ -2,12 +2,12 @@
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Core/CoreEvents.h>
 
-#include <Urho3D/Graphics/StaticModel.h>
-#include <Urho3D/Graphics/Model.h>
-
-#include <Urho3D/Resource/ResourceCache.h>
+//#include <Urho3D/Graphics/StaticModel.h>
+//#include <Urho3D/Graphics/Model.h>
+//#include <Urho3D/Resource/ResourceCache.h>
 
 #include "LevelGen.h"
+#include "../game/Obstacle.h"
 //#include "../framework/src/SimplexNoise.h"
 #include <Urho3D/IO/Log.h>
 
@@ -110,11 +110,14 @@ CustomGeo* LevelGen::Grid(const Vector3 ws_offset)
 }
 //-----
 void LevelGen::MakeObstacle(Node* node, Vector3 ws_offset){
-    ResourceCache* cache = GetSubsystem<ResourceCache>();
+   // ResourceCache* cache = GetSubsystem<ResourceCache>();
     Vector3 newpos = Vector3(Random(-tilescale_*2.0f,tilescale_*2.0f),0.0f,Random(tilescale_*4.0f));
 
-    StaticModel* object = node->CreateComponent<StaticModel>();
-    object->SetModel( cache->GetResource<Model>( "Models/Box.mdl" ) );
+     Obstacle* p = node->CreateComponent<Obstacle>();
+     p->Setup();
+
+    //StaticModel* object = node->CreateComponent<StaticModel>();
+    //object->SetModel( cache->GetResource<Model>( "Models/Box.mdl" ) );
 
     node->SetWorldPosition(newpos+ws_offset);
 }

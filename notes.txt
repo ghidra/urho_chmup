@@ -1,10 +1,12 @@
 left off:
 
+why do I have to have animatedmodle, insetad of staticmodel to compile in obstacle
+
 random seed in BG generation
 constant ship speed
 make max speed a little slower.
 
-obstacles converted to pawns to get rigid bodies and collision later data 
+obstacles with proper collision data
 
 need to do a typewritter like effect on large bg, so that character is near origin when entering zones.
  -maybe look at a zone manager, that does some of that for me
