@@ -6,6 +6,7 @@
 #include <Urho3D/Core/Object.h>
 #include "../game/CustomGeo.h"
 #include "../framework/src/SimplexNoise.h"
+//#include "../framework/src/Pawn.h"
 
 using namespace Urho3D;
 
@@ -33,6 +34,8 @@ private:
 	CustomGeo* Grid(const Vector3 ws_offset = Vector3(0.0f,0.0f,0.0f) );
 	CustomGeo* Split(const Vector3 offset = Vector3(0.0f,0.0f,0.0f) );
 	void Tile(CustomGeo* cg, Vector3 ws_offset, Vector3 offset, const unsigned short quad=0, const int wall=0);
+
+	void MakeObstacle(Node* node, Vector3 ws_offset);
 
 	float tilescale_;
 	unsigned short maxsegments_;//the max number of segments

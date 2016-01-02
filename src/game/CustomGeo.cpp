@@ -51,7 +51,7 @@ void CustomGeo::Surface(const unsigned short slices, const unsigned short stacks
 		for(unsigned j=0; j<stacks; ++j)
 		{
 			float phi = float(j)*2.0*3.1415/float(stacks);
-			Vector3 p = fptr(context,theta,phi);
+			Vector3 p = (*fptr)(context,theta,phi);
 			AddPoint(p);
 		}
 	}
@@ -191,7 +191,7 @@ Vector3 CustomGeo::Sphere(void* context, const float u, const float v)
 }
 void CustomGeo::GetSphere(const unsigned short u, const unsigned short v)
 {
-	//Surface(u,v,&Sphere,0);
+	//Surface(u,v,&(Sphere),*(CustomGeo));
 }
 //------debug
 void CustomGeo::Debug(const String label, const String value){

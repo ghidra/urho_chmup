@@ -76,8 +76,15 @@ void Gun01::SpawnProjectile()
     Node* projectileNode_ = node_->GetScene()->CreateChild("projectile");
     projectileNode_->SetPosition(offpos);
 
+    VariantMap projectileParms;
+    projectileParms["direction"] = Vector3(0.0f,0.0f,1.0f);
+    projectileParms["range"] = 100.0f;
+    projectileParms["speed"] = 200.0f;
+    projectileParms["usegravity"] = false;
+
     Projectile* projectile_ = projectileNode_->CreateComponent<Projectile>();
-    projectile_->Setup(Vector3(0.0f,0.0f,1.0f));
+    //projectile_->Setup(Vector3(0.0f,0.0f,1.0f));
+    projectile_->Setup( projectileParms );
    
 }
 

@@ -92,6 +92,7 @@ void Main::Start()
     ///---mess with default zone
     Renderer* renderer = GetSubsystem<Renderer>();
     Zone* dzone = renderer->GetDefaultZone();
+    //dzone->SetHeightFog(false);
     dzone->SetFogStart(20.0f);
     dzone->SetFogEnd(60.0f);
 

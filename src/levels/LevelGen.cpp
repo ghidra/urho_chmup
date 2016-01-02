@@ -2,6 +2,11 @@
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Core/CoreEvents.h>
 
+#include <Urho3D/Graphics/StaticModel.h>
+#include <Urho3D/Graphics/Model.h>
+
+#include <Urho3D/Resource/ResourceCache.h>
+
 #include "LevelGen.h"
 //#include "../framework/src/SimplexNoise.h"
 #include <Urho3D/IO/Log.h>
@@ -92,9 +97,28 @@ CustomGeo* LevelGen::Grid(const Vector3 ws_offset)
     //cg->Subdivide();
 
     cg->Build(nodes_[nodes_.Size()-1],true,32,63);
+
+    //here is a good place to also thrown down some obstacles
+    unsigned numobstacles = unsigned(Random(5.0f)) ;
+    for(unsigned o=0;o<numobstacles;++o)
+    {
+        Node* obstaclenode = node_->GetScene()->CreateChild("obstacle");
+        MakeObstacle(obstaclenode,ws_offset);
+    }
     
     return cg;
 }
+//-----
+void LevelGen::MakeObstacle(Node* node, Vector3 ws_offset){
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Vector3 newpos = Vector3(Random(-tilescale_*2.0f,tilescale_*2.0f),0.0f,Random(tilescale_*4.0f));
+
+    StaticModel* object = node->CreateComponent<StaticModel>();
+    object->SetModel( cache->GetResource<Model>( "Models/Box.mdl" ) );
+
+    node->SetWorldPosition(newpos+ws_offset);
+}
+//----
 CustomGeo* LevelGen::Split(const Vector3 offset)
 {
 

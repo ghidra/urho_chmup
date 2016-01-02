@@ -1,10 +1,11 @@
 left off:
 
 random seed in BG generation
+constant ship speed
+make max speed a little slower.
 
-add some obstacles that can be shot out of the way
-projectiles need some more logic in framework (die after amount of time, die after distance travelled)
-projectiles need to not be effected by gravity
+obstacles converted to pawns to get rigid bodies and collision later data 
+
 need to do a typewritter like effect on large bg, so that character is near origin when entering zones.
  -maybe look at a zone manager, that does some of that for me
 
