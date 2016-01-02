@@ -43,7 +43,7 @@ void CustomGeo::AddTriangle(const unsigned short p1, const unsigned short p2, co
 	normals_.Push(Normal(points_[p1],points_[p2],points_[p3]));
 }
 //http://stackoverflow.com/questions/12662891/c-passing-member-function-as-argument
-void CustomGeo::Surface(const unsigned short slices, const unsigned short stacks, Vector3 (*fptr)(void*, float, float), void* context)
+void CustomGeo::Surface(const unsigned short slices, const unsigned short stacks, Vector3 (CustomGeo::*fptr)(void*, float, float), void* context)
 {
 	for(unsigned i=0; i<slices+1; ++i)
 	{
@@ -51,7 +51,7 @@ void CustomGeo::Surface(const unsigned short slices, const unsigned short stacks
 		for(unsigned j=0; j<stacks; ++j)
 		{
 			float phi = float(j)*2.0*3.1415/float(stacks);
-			Vector3 p = (*fptr)(context,theta,phi);
+			Vector3 p = (this->*fptr)(context,theta,phi);
 			AddPoint(p);
 		}
 	}
@@ -191,7 +191,7 @@ Vector3 CustomGeo::Sphere(void* context, const float u, const float v)
 }
 void CustomGeo::GetSphere(const unsigned short u, const unsigned short v)
 {
-	//Surface(u,v,&(Sphere),*(CustomGeo));
+	Surface(u,v,&CustomGeo::Sphere,0);
 }
 //------debug
 void CustomGeo::Debug(const String label, const String value){

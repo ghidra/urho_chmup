@@ -22,7 +22,7 @@ public:
 	//void SetPoint(const unsigned short i, const Vector3 p);
 
 	void AddTriangle(const unsigned short p1, const unsigned short p2, const unsigned short p3);
-	void Surface(const unsigned short slices, const unsigned short stacks, Vector3 (*fptr)(void*, float, float), void* context);
+	void Surface(const unsigned short slices, const unsigned short stacks, Vector3 (CustomGeo::*fptr)(void*, float, float), void* context);
 	void Subdivide(const unsigned short depth=1);
 	void GetSphere(const unsigned short u, const unsigned short v);
 	void Build(Node* node, const bool rigid = false, const unsigned layer = 0, const unsigned mask = 0);
