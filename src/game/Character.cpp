@@ -39,7 +39,8 @@ void Character::Setup()
     Pawn::Setup();//do the basic set up with stored and set values
 
     shape_ = node_->CreateComponent<CollisionShape>();
-    shape_->SetCapsule(3.0f, 10.0f, Vector3(0.0f, 5.0f, 0.0f));
+    //shape_->SetCapsule(3.0f, 10.0f, Vector3(0.0f, 5.0f, 0.0f));
+    shape_->SetBox(Vector3(1.0f,1.0f,1.0f));
 
     body_->SetUseGravity(false);//dont use gravity
     body_->SetLinearFactor(Vector3(1.0f,0.0f,1.0f));

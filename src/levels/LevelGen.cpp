@@ -119,7 +119,7 @@ void LevelGen::MakeObstacle(Node* node, Vector3 ws_offset){
     //StaticModel* object = node->CreateComponent<StaticModel>();
     //object->SetModel( cache->GetResource<Model>( "Models/Box.mdl" ) );
 
-    node->SetWorldPosition(newpos+ws_offset);
+    node->SetWorldPosition(newpos+ws_offset+Vector3(0.0,4.0f,0.0f) );//adding inverse of down
 }
 //----
 CustomGeo* LevelGen::Split(const Vector3 offset)

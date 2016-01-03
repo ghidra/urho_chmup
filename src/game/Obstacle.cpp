@@ -14,6 +14,8 @@ Obstacle::Obstacle(Context* context) :
     SetUpdateEventMask(USE_FIXEDUPDATE);
     mesh_ = String("Box.mdl");
     brakeForce_=0.05;
+    collision_layer_ = 16;
+    collision_mask_ = 51;
 }
 
 //-------------------
@@ -37,6 +39,7 @@ void Obstacle::Setup()
 
     body_->SetUseGravity(false);//dont use gravity
     body_->SetLinearFactor(Vector3(1.0f,0.0f,1.0f));
+    body_->SetMass(30.0f);
 }
 //--------
 void Obstacle::FixedUpdate(float timeStep)
