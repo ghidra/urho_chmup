@@ -1,7 +1,10 @@
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Core/Context.h>
 
-#include <Urho3D/Graphics/AnimatedModel.h>
+//#include <Urho3D/Graphics/AnimatedModel.h>
+
+#include <Urho3D/Graphics/StaticModel.h>
+#include <Urho3D/Graphics/Model.h>
 
 #include <Urho3D/Physics/CollisionShape.h>
 

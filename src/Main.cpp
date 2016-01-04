@@ -31,6 +31,7 @@
 #include "framework/src/Controller.h"
 #include "framework/src/State.h"
 #include "framework/src/CameraLogic.h"
+#include "framework/src/RagDoll.h"
 #include "game/Gun01.h"
 #include "framework/src/Projectile.h"
 #include "game/Character.h"
