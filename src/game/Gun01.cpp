@@ -81,6 +81,7 @@ void Gun01::SpawnProjectile()
     projectileParms["range"] = 100.0f;
     projectileParms["speed"] = 200.0f;
     projectileParms["usegravity"] = false;
+    projectileParms["raytest"] = true;
 
     Projectile* projectile_ = projectileNode_->CreateComponent<Projectile>();
     //projectile_->Setup(Vector3(0.0f,0.0f,1.0f));

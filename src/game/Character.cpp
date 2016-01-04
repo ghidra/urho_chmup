@@ -19,7 +19,7 @@ Character::Character(Context* context) :
 {
     SetUpdateEventMask(USE_FIXEDUPDATE);
     mesh_ = String("Box.mdl");
-    brakeForce_=0.05;
+    brakeForce_=0.1;
 }
 
 //-------------------
