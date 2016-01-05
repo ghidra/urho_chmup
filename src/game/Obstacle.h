@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "../framework/src/Pawn.h"
+#include "../framework/src/Actor.h"
 
 using namespace Urho3D;
 
@@ -15,10 +15,10 @@ class Scene;
 
 }
 
-class Obstacle : public Pawn
+class Obstacle : public Actor
 {
 
-    URHO3D_OBJECT(Obstacle,Pawn);
+    URHO3D_OBJECT(Obstacle,Actor);
 
 public:
 
@@ -29,6 +29,10 @@ public:
     virtual void Start();
     virtual void FixedUpdate(float timeStep);
     virtual void Setup();
+
+protected:
+
+    virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
    
 };
 #endif

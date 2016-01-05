@@ -1,9 +1,12 @@
 left off:
 
-why do I have to have animatedmodle, insetad of staticmodel to compile in obstacle
+add some pickups in the scene
+-specifically weapon pickups
+
+-make lots of weapons
+-make lots of projectile types
 
 random seed in BG generation
-make obstacles "explode" or dissapear for now
 
 need to do a typewritter like effect on large bg, so that character is near origin when entering zones.
  -maybe look at a zone manager, that does some of that for me
@@ -13,9 +16,6 @@ need to do a typewritter like effect on large bg, so that character is near orig
  start adding in some cool lighting effects
  procedural ship
  with lights along the geometry.
-
-add some pickups in the scene
--specifically weapon pickups
 
 ---------
 
