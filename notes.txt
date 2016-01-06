@@ -5,6 +5,11 @@ add some pickups in the scene
 
 -make lots of weapons
 -make lots of projectile types
+-i think that I am going to have one weapon, that pickups can effect.
+-it will give the weapon the logic
+	-ie rotation speed (sin rotation)
+	-number of projectiles at once
+	-fire rate
 
 random seed in BG generation
 

@@ -31,12 +31,20 @@
 #include <Urho3D/Engine/DebugHud.h>
 
 Gun01::Gun01(Context* context) :
-    Weapon(context)
+    Weapon(context),
+    numProjectiles_(1),
+    rotationTimer_(0.0f),
+    rotationSpeed_(1200.0f),
+    rotationRange_(45.0f),
+    rotation_(Quaternion()),
+    projectileSpeed_(80.0f),
+    projectileRange_(20.0f)
 {
     //CameraLogic::RegisterObject(context);
     //SetUpdateEventMask(USE_FIXEDUPDATE);
     //collision_layer_ = 4;
     //collision_mask_ = 33;
+    firing_interval_=0.02;
     mesh_ = String("Box.mdl");
 }
 Gun01::~Gun01(){}
@@ -68,21 +76,42 @@ void Gun01::Setup()
 {
     
 }*/
+void Gun01::Fire(float timeStep)
+{
+    Weapon::Fire(timeStep);
+    //now we can rotate the turret if we have rotation values
+    rotationTimer_+=timeStep;
+    float r = Sin(rotationTimer_*rotationSpeed_);
+    Quaternion q = Quaternion(r*rotationRange_,Vector3(0.0f,1.0f,0.0f));
+    node_->SetRotation(q);
+    debug_->Hud("gun rotation",String(q));
+}
+void Gun01::ReleaseFire()
+{
+    Weapon::ReleaseFire();
+    /*
+    firing_ = 0;
+    firing_timer_ = 0.0f;
+    node_->SetTransform(Vector3(),Quaternion());
+    */
+}
 
 void Gun01::SpawnProjectile()
 {
     Vector3 pos = node_->GetWorldPosition();
+    Quaternion rot = node_->GetWorldRotation();
+    Vector3 dir = rot*Vector3(0.0f,0.0f,1.0f);
 
-    Vector3 offpos = pos+Vector3(0.0f,0.0f,1.0f);
+    Vector3 offpos = pos+dir;
 
 
     Node* projectileNode_ = node_->GetScene()->CreateChild("projectile");
     projectileNode_->SetPosition(offpos);
 
     VariantMap projectileParms;
-    projectileParms["direction"] = Vector3(0.0f,0.0f,1.0f);
-    projectileParms["range"] = 100.0f;
-    projectileParms["speed"] = 200.0f;
+    projectileParms["direction"] = dir;
+    projectileParms["range"] = projectileRange_;
+    projectileParms["speed"] = projectileSpeed_;
     projectileParms["usegravity"] = false;
     projectileParms["raytest"] = true;
 
@@ -91,4 +120,16 @@ void Gun01::SpawnProjectile()
     projectile_->Setup( projectileParms );
    
 }
+//------setting data from pickups most likely
+void Gun01::SetProjectileRate(const unsigned short rate){numProjectiles_=rate;}
+void Gun01::SetRotation(const float speed, const float range, const float offset)
+{
+    rotationSpeed_=speed;
+    rotationRange_=range;
+    //use the offset to set the rotation immediatly currently not implemented
+}
+void Gun01::SetRotationSpeed(const float speed){rotationSpeed_=speed;}
+void Gun01::SetRotationRange(const float range){rotationRange_=range;}
+void Gun01::SetProjectileSpeed(const float speed){projectileSpeed_=speed;}
+void Gun01::SetProjectileRange(const float range){projectileRange_=range;}
 
