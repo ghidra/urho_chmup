@@ -1,4 +1,5 @@
 #include <Urho3D/Urho3D.h>
+#include <Urho3D/Engine/Engine.h>
 #include <Urho3D/Physics/PhysicsWorld.h>
 #include <Urho3D/Graphics/Renderer.h>
 #include <Urho3D/Graphics/Zone.h>
