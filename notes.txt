@@ -1,7 +1,7 @@
 left off:
 
-add some pickups in the scene
--specifically weapon pickups
+-pickups need some logic.. looks like they allow any collosion with any actor to call it collected. (at the framework class)
+It needs to know who to allow to pick it up..
 
 -make lots of weapons
 -make lots of projectile types

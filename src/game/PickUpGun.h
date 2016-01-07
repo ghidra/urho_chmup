@@ -1,34 +1,32 @@
-#ifndef OBSTACLE_H
-#define OBSTACLE_H
+#ifndef PICKUPGUN_H
+#define PICKUPGUN_H
 
 #pragma once
 
-#include "../framework/src/Actor.h"
+#include "../framework/src/PickUp.h"
 
 using namespace Urho3D;
 
 namespace Urho3D
 {
-
 class Node;
 class Scene;
-
 }
 
-class Obstacle : public Actor
+class PickUpGun : public PickUp
 {
 
-    URHO3D_OBJECT(Obstacle,Actor);
+    URHO3D_OBJECT(PickUpGun,PickUp);
 
 public:
 
-    Obstacle(Context* context);
-    ~Obstacle();
+    PickUpGun(Context* context);
+    ~PickUpGun();
 
     static void RegisterObject(Context* context);
 
-    virtual void Start();
-    virtual void FixedUpdate(float timeStep);
+     virtual void Start();
+    //virtual void FixedUpdate(float timeStep);
     virtual void Setup();
 
 protected:

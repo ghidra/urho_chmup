@@ -15,7 +15,8 @@
 #include <Urho3D/Resource/ResourceCache.h>
 
 #include "../framework/src/Projectile.h"
-
+#include "PickUpGun.h"
+#include "ObstacleDebris.h"
 #include "Obstacle.h"
 
 Obstacle::Obstacle(Context* context) :
@@ -28,7 +29,7 @@ Obstacle::Obstacle(Context* context) :
     collision_layer_ = 16;
     collision_mask_ = 51;
 }
-
+Obstacle::~Obstacle(){}
 //-------------------
 //-------------------
 void Obstacle::RegisterObject(Context* context)
@@ -76,19 +77,24 @@ void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
     if(health_<=0.0f)
     {
         //lets make some more nodes and cubes for debris
-        ResourceCache* cache = GetSubsystem<ResourceCache>();
+        //ResourceCache* cache = GetSubsystem<ResourceCache>();
         Vector3 wp = node_->GetWorldPosition();
         Vector3 vel = otherBody->GetLinearVelocity();
 
         for(unsigned i=0; i<4+unsigned(Random(6));++i)
         {
             Node* d = node_->GetScene()->CreateChild("debris");
-            Vector3 rp = Vector3( Random(-1.0f,1.0f), Random(-1.0f,1.0f), Random(-1.0f,1.0f) );
-            Vector3 dir = vel.Normalized().Lerp( rp.Normalized(), 0.2);
+            ObstacleDebris* od = d->CreateComponent<ObstacleDebris>();
+            od->Setup();
+            RigidBody* rb = d->GetComponent<RigidBody>();
+
+           Vector3 rp = Vector3( Random(-1.0f,1.0f), Random(-1.0f,1.0f), Random(-1.0f,1.0f) );
+            Vector3 dir = vel.Normalized().Lerp( rp.Normalized(), 0.1);
 
             d->SetWorldPosition( Vector3(wp+rp) );
+            rb->ApplyImpulse(dir*Random(20.0f));
 
-            StaticModel* sm = d->CreateComponent<StaticModel>();
+            /*StaticModel* sm = d->CreateComponent<StaticModel>();
             sm->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
             RigidBody* rb = d->CreateComponent<RigidBody>();
             CollisionShape* cs = d->CreateComponent<CollisionShape>();
@@ -101,9 +107,18 @@ void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
             rb->SetMass(1.0f);
             //Obstacle* p = node->CreateComponent<Obstacle>();
             //p->Setup();
-            //rb->SetEnabled(true);
-            rb->ApplyImpulse(dir*Random(20.0f));
+            //rb->SetEnabled(true);*/
+            
         }
+        //make a pick up maybe
+        float probability = Random();
+        if(probability<0.5)
+         {
+            Node* pu = node_->GetScene()->CreateChild("pickup");
+            pu->SetWorldPosition( wp );
+            PickUpGun* pug = pu->CreateComponent<PickUpGun>();
+            pug->Setup();
+         }   
         node_->Remove();
     }
 
