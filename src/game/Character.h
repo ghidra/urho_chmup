@@ -30,6 +30,8 @@ public:
     virtual void FixedUpdate(float timeStep);
     virtual void Setup();
 
+    void ModifyWeapon(VariantMap& parms);
+
 private:
     
     void HandleSceneDrawableUpdateFinished(StringHash eventType, VariantMap& eventData);

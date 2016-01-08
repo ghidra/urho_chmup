@@ -11,9 +11,7 @@
 PickUpGun::PickUpGun(Context* context) :
     PickUp(context)
 {
-    collision_layer_ = 4;
-    collision_mask_ = 33;
-    mesh_="Box.mdl";
+    mesh_="Sphere.mdl";
 }
 PickUpGun::~PickUpGun(){}
 //-------------------
@@ -35,6 +33,14 @@ void PickUpGun::Setup()
     shape_ = node_->CreateComponent<CollisionShape>();
     shape_->SetBox(Vector3(1.0f, 1.0f, 1.0f));
 
+    body_->SetLinearFactor(Vector3(1.0f,0.0f,1.0f));
+
+    //make some pickup values to be passed to the weapons
+    rotationSpeed_ = Random(0.0f,1200.0f);
+    rotationRange_ = Random(0.0f,90.0f);
+    projectileSpeed_ = Random(20.0f,200.0f);
+    projectileRange_ = Random(20.0f,100.f);
+
     //node_->SetPosition(Vector3(4.0f, 8.0f, 0.0f));//objectNode
     //node_->SetRotation(Quaternion(33.0f,78.0f,24.0f));
 
@@ -54,18 +60,21 @@ void PickUpGun::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
     if(collected_)
     {
         Node* otherNode = static_cast<Node*>(eventData[P_OTHERNODE].GetPtr());
-        Node* boneNode = otherNode->GetChild(String("gun"), true);//get the bone that holds the gun
-
-        //Node* gunNode = boneNode->CreateChild("gun_01");
-        //Gun01* weapon = gunNode->CreateComponent<Gun01>();
-        //weapon->Setup();
+        
 
         //we need to give the weapon to the character
-        /*Character* character =  otherNode->GetComponent<Character>();
+        Character* character =  otherNode->GetComponent<Character>();
         if(character != NULL)
         {
-            character->EquipWeapon(weapon);
-        }*/
+            VariantMap weaponParms;
+            weaponParms["rotationSpeed"] = rotationSpeed_;
+            weaponParms["rotationRange"] = rotationRange_;
+            weaponParms["projectileSpeed"] = projectileSpeed_;
+            weaponParms["projectileRange"] = projectileRange_;
+
+
+            character->ModifyWeapon(weaponParms);
+        }
 
         node_->Remove();
     }

@@ -8,6 +8,7 @@
 
 #include "Character.h"
 #include "states/StateCharacterFlying.h"//force it into falling first
+#include "Gun01.h"//force it into falling first
 
 
 #include <Urho3D/DebugNew.h>
@@ -19,6 +20,7 @@ Character::Character(Context* context) :
 {
     SetUpdateEventMask(USE_FIXEDUPDATE);
     mesh_ = String("Box.mdl");
+    canCollect_=true;
     brakeForce_=0.1;
 }
 
@@ -78,8 +80,18 @@ void Character::FixedUpdate(float timeStep)
         {
             weapon_->Update(ctrl,timeStep);
         }
-        
-        // Reset grounded flag for next frame //might be obsolete
-        onGround_ = false;//i might not really need this anymore
     }
+}
+//-------
+void Character::ModifyWeapon(VariantMap& parms)
+{
+    if(weapon_!=NULL)
+    {
+        Gun01* w = static_cast<Gun01*>(weapon_);
+        if( parms.Contains("rotationSpeed") ) w->SetRotationSpeed( parms["rotationSpeed"].GetFloat() );
+        if( parms.Contains("rotationRange") ) w->SetRotationRange( parms["rotationRange"].GetFloat() );
+        if( parms.Contains("projectileSpeed") ) w->SetProjectileSpeed( parms["projectileSpeed"].GetFloat() );
+        if( parms.Contains("projectileRange") ) w->SetProjectileRange( parms["projectileRange"].GetFloat() );
+    }
+
 }

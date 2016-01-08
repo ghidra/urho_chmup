@@ -1,7 +1,7 @@
 left off:
 
--pickups need some logic.. looks like they allow any collosion with any actor to call it collected. (at the framework class)
-It needs to know who to allow to pick it up..
+-pickup needs to be able to set attributes on the characters weapon
+-weapon needs to be able to add recoil to the character node
 
 -make lots of weapons
 -make lots of projectile types

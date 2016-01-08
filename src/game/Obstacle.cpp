@@ -88,7 +88,7 @@ void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
             od->Setup();
             RigidBody* rb = d->GetComponent<RigidBody>();
 
-           Vector3 rp = Vector3( Random(-1.0f,1.0f), Random(-1.0f,1.0f), Random(-1.0f,1.0f) );
+            Vector3 rp = Vector3( Random(-1.0f,1.0f), Random(-1.0f,1.0f), Random(-1.0f,1.0f) );
             Vector3 dir = vel.Normalized().Lerp( rp.Normalized(), 0.1);
 
             d->SetWorldPosition( Vector3(wp+rp) );

@@ -48,9 +48,10 @@ private:
 
 	unsigned short numProjectiles_;
 	float rotationTimer_;//to increment a timer for rotation
+    Quaternion rotation_;//the angle where we left off on rotation
+    
 	float rotationSpeed_;//speed to rotate at
 	float rotationRange_;//allowable rotation range
-	Quaternion rotation_;//the angle where we left off on rotation
 	float projectileSpeed_;
 	float projectileRange_;
    

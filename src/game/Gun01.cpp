@@ -84,7 +84,7 @@ void Gun01::Fire(float timeStep)
     float r = Sin(rotationTimer_*rotationSpeed_);
     Quaternion q = Quaternion(r*rotationRange_,Vector3(0.0f,1.0f,0.0f));
     node_->SetRotation(q);
-    debug_->Hud("gun rotation",String(q));
+    //debug_->Hud("gun rotation",String(q));
 }
 void Gun01::ReleaseFire()
 {
