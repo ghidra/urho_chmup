@@ -1,15 +1,11 @@
 left off:
 
--pickup needs to be able to set attributes on the characters weapon
+-pickup needs to set fire rate
+-weapons need to have a cool off period
+	-and a clip capacity
 -weapon needs to be able to add recoil to the character node
 
--make lots of weapons
--make lots of projectile types
--i think that I am going to have one weapon, that pickups can effect.
--it will give the weapon the logic
-	-ie rotation speed (sin rotation)
-	-number of projectiles at once
-	-fire rate
+-make different projectile types
 
 random seed in BG generation
 
