@@ -41,6 +41,10 @@ void PickUpGun::Setup()
     projectileSpeed_ = Random(20.0f,200.0f);
     projectileRange_ = Random(20.0f,100.f);
 
+    fireRate_ = Random(1.0f,20.0f);
+    magSize_ = Random(5,40);
+    magSpeed_ = Random(0.25f,2.0f);
+
     //node_->SetPosition(Vector3(4.0f, 8.0f, 0.0f));//objectNode
     //node_->SetRotation(Quaternion(33.0f,78.0f,24.0f));
 
@@ -71,7 +75,9 @@ void PickUpGun::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
             weaponParms["rotationRange"] = rotationRange_;
             weaponParms["projectileSpeed"] = projectileSpeed_;
             weaponParms["projectileRange"] = projectileRange_;
-
+            weaponParms["fireRate"] = fireRate_;
+            weaponParms["magSize"] = magSize_;
+            weaponParms["magSpeed"] = magSpeed_;
 
             character->ModifyWeapon(weaponParms);
         }

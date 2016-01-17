@@ -34,9 +34,12 @@ protected:
     virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
 
     float rotationSpeed_;//speed to rotate at
-	float rotationRange_;//allowable rotation range
-	float projectileSpeed_;
-	float projectileRange_;
+    float rotationRange_;//allowable rotation range
+    float projectileSpeed_;
+    float projectileRange_;
+    float fireRate_;
+    unsigned magSize_;
+    float magSpeed_;
    
 };
 #endif
