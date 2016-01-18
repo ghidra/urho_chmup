@@ -26,10 +26,6 @@
 #include "../framework/src/Weapon.h"
 #include "../framework/src/Projectile.h"
 
-#include <Urho3D/DebugNew.h>
-#include <Urho3D/IO/Log.h>
-#include <Urho3D/Engine/DebugHud.h>
-
 Gun01::Gun01(Context* context) :
     Weapon(context),
     numProjectiles_(1),
@@ -96,6 +92,18 @@ void Gun01::ReleaseFire()
     */
 }
 
+void Gun01::Recoil(const Vector3 dir)
+{
+    //try to move the ship a little
+    RigidBody* ship = node_->GetParent()->GetComponent<RigidBody>();//this should be the main node that holds the whole ship
+    if(ship!=NULL)
+    {
+        //debug_->Hud("recoil",String(dir));
+        Vector3 rdir = dir*-1.0f;
+        ship->ApplyImpulse(rdir*projectileSpeed_*0.075f);
+    }
+}
+
 void Gun01::SpawnProjectile()
 {
     Vector3 pos = node_->GetWorldPosition();
@@ -103,7 +111,6 @@ void Gun01::SpawnProjectile()
     Vector3 dir = rot*Vector3(0.0f,0.0f,1.0f);
 
     Vector3 offpos = pos+dir;
-
 
     Node* projectileNode_ = node_->GetScene()->CreateChild("projectile");
     projectileNode_->SetPosition(offpos);
@@ -114,6 +121,8 @@ void Gun01::SpawnProjectile()
     projectileParms["speed"] = projectileSpeed_;
     projectileParms["usegravity"] = false;
     projectileParms["raytest"] = true;
+
+    Recoil(dir);
 
     Projectile* projectile_ = projectileNode_->CreateComponent<Projectile>();
     //projectile_->Setup(Vector3(0.0f,0.0f,1.0f));

@@ -10,11 +10,6 @@
 #include "states/StateCharacterFlying.h"//force it into falling first
 #include "Gun01.h"//force it into falling first
 
-
-#include <Urho3D/DebugNew.h>
-#include <Urho3D/IO/Log.h>
-#include <Urho3D/Engine/DebugHud.h>
-
 Character::Character(Context* context) :
     Pawn(context)
 {

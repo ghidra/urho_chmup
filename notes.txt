@@ -2,7 +2,6 @@ left off:
 
 -weapon reload time works but might be a bit buggy
 -weapon visual referense of realoading and ammo capacity
--weapon needs to be able to add recoil to the character node
 
 -make different projectile types
 

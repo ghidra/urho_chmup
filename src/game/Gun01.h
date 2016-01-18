@@ -42,6 +42,7 @@ public:
 
 protected:
     //virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
+    virtual void Recoil( const Vector3 dir );
     virtual void SpawnProjectile();
 
 private:
