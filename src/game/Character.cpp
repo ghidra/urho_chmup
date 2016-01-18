@@ -44,6 +44,11 @@ void Character::Setup()
 
     SetState( new StateCharacterFlying(context_) );
 }
+void Character::GiveCameraNode(Node* camera)
+{
+    //i can use this for setting GUI elements to it from this character
+    cameraNode_ = camera;
+}
 //--------
 void Character::FixedUpdate(float timeStep)
 {

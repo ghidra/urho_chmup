@@ -30,11 +30,14 @@ public:
     virtual void FixedUpdate(float timeStep);
     virtual void Setup();
 
+    virtual void GiveCameraNode(Node* camera);
+
     void ModifyWeapon(VariantMap& parms);
 
 private:
     
     void HandleSceneDrawableUpdateFinished(StringHash eventType, VariantMap& eventData);
+    SharedPtr<Node> cameraNode_;
    
 };
 #endif

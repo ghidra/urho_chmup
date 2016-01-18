@@ -70,6 +70,7 @@ void Main::Start()
     SharedPtr<Node> characterNode_ = level_->GetCharacterNode();
     Character* character_ = characterNode_->GetComponent<Character>();
     character_->Possess(applicationInput_);
+    character_->GiveCameraNode(applicationInput_->GetCameraNode());
     applicationInput_->SetCameraTarget(characterNode_);
 
     ///---mess with default zone
