@@ -11,4 +11,6 @@ link.bat
 launch.sh
 launch.bat
 
-bin
+bin/CoreData
+bin/Data
+bin/chmup
