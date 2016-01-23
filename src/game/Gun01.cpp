@@ -25,6 +25,7 @@
 
 #include "../framework/src/Weapon.h"
 #include "../framework/src/Projectile.h"
+#include "ProjectileFireball.h"
 
 Gun01::Gun01(Context* context) :
     Weapon(context),
@@ -124,7 +125,7 @@ void Gun01::SpawnProjectile()
 
     Recoil(dir);
 
-    Projectile* projectile_ = projectileNode_->CreateComponent<Projectile>();
+    ProjectileFireball* projectile_ = projectileNode_->CreateComponent<ProjectileFireball>();
     //projectile_->Setup(Vector3(0.0f,0.0f,1.0f));
     projectile_->Setup( projectileParms );
    

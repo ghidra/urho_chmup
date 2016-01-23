@@ -16,6 +16,7 @@
 #include "game/Obstacle.h"
 #include "game/ObstacleDebris.h"
 #include "game/PickUpGun.h"
+#include "game/ProjectileFireball.h"
 //#include "game/CustomGeo.h"
 
 #include <Urho3D/DebugNew.h>
@@ -32,6 +33,7 @@ Main::Main(Context* context) :
     RagDoll::RegisterObject(context);
     Gun01::RegisterObject(context);
     Projectile::RegisterObject(context);
+    ProjectileFireball::RegisterObject(context);
     Obstacle::RegisterObject(context);
     ObstacleDebris::RegisterObject(context);
     PickUpGun::RegisterObject(context);
