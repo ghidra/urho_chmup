@@ -68,27 +68,25 @@ float fbm( in vec3 x )
     return f*1.2;
 }
 
-//#endif
-
 
 void VS()
 {
-  	mat4 modelMatrix = iModelMatrix;
+    mat4 modelMatrix = iModelMatrix;
 
-  	//modify positions
-  	float n = fbm(iPos.xyz+vec3(0.0,-cElapsedTime,0.0));
-  	vec3 disp = iNormal*(n*0.5);
+    //modify positions
+    float n = fbm(iPos.xyz+vec3(0.0,-cElapsedTime,0.0));
+    vec3 disp = iNormal*(n*0.5);
     //get the dot of normal and direction
     float d = dot( iNormal, vec3(0.0,1.0,0.0) );
     float cd = clamp(d,0.25,1.0);
-  	vec3 worldPos = ((iPos+vec4(disp,0.0)*d*cd*2.0) * modelMatrix).xyz;
+    vec3 worldPos = ((iPos+vec4(disp,0.0)*d*cd*2.0) * modelMatrix).xyz;
 
-  	//vec3 worldPos = GetWorldPos(modelMatrix);
-  	gl_Position = GetClipPos(worldPos);
+    //vec3 worldPos = GetWorldPos(modelMatrix);
+    gl_Position = GetClipPos(worldPos);
 
- 	vTexCoord2 = iTexCoord;
+    vTexCoord2 = iTexCoord;
 
- 	vNormal = GetWorldNormal(modelMatrix);
+    vNormal = GetWorldNormal(modelMatrix);
     vWorldPos = vec4(worldPos, GetDepth(gl_Position));
     //vIPos = iPos;//this comes from Transform.glsl
     vIPos = (iPos*vec4(1.0,0.2,1.0,1.0))+vec4(0.0,-cElapsedTime,0.0,0.0);//usetime
@@ -100,13 +98,13 @@ void VS()
 
 void PS()
 {
-	vec4 diffColor = cMatDiffColor;
-	vec4 diffInput = texture2D(sDiffMap, vTexCoord2);
+    vec4 diffColor = cMatDiffColor;
+    vec4 diffInput = texture2D(sDiffMap, vTexCoord2);
 
-	//vec3 n = vec3(fbm(vTexCoord4.xyz));
-	//vec3 n = vec3(fbm(vWorldPos.xyz));
-	vec3 n = vec3(fbm(vIPos.xyz));
+    //vec3 n = vec3(fbm(vTexCoord4.xyz));
+    //vec3 n = vec3(fbm(vWorldPos.xyz));
+    vec3 n = vec3(fbm(vIPos.xyz));
 
-	//gl_FragColor = diffColor * diffInput;
-	gl_FragColor = vec4(n,1.0);
+    //gl_FragColor = diffColor * diffInput;
+    gl_FragColor = vec4(n,1.0);
 }

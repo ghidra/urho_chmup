@@ -45,7 +45,7 @@ void ProjectileFireball::SetupLocal()
 {
     ResourceCache* cache = GetSubsystem<ResourceCache>();
 
-    Material* bmat = cache->GetResource<Material>( "Materials/projectile_fireball.xml");
+    Material* bmat = cache->GetResource<Material>( "Materials/ProjectileFireball.xml");
     SharedPtr<Material> cmat = bmat->Clone();
 
     //Color myCol = Color(Random(1.0f),Random(1.0f),Random(1.0f),1.0f);

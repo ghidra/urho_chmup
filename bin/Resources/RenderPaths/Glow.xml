@@ -1,0 +1,16 @@
+<renderpath>
+    <rendertarget name="Stow" tag="Glow" sizedivisor="4 4" format="rgb"  />
+    <rendertarget name="edge" tag="Glow" sizedivisor="1 1" format="rgb"  />
+
+    <command type="quad" tag="Glow" vs="Stow" ps="Stow" output="Stow">
+        <texture unit="diffuse" name="viewport" />
+    </command>
+	
+    <command type="scenepass" tag="Glow" pass="glow" sort="backtofront" metadata="base" />
+    
+    <command type="quad" tag="Glow" vs="GlowQuad" ps="GlowQuad" output="viewport">
+        <texture unit="diffuse" name="stow" />
+        <texture unit="normal" name="viewport" />
+    </command>
+
+</renderpath>

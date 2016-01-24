@@ -5,6 +5,12 @@
 #include <Urho3D/Graphics/Zone.h>
 #include <Urho3D/Scene/Scene.h>
 
+#include <Urho3D/Graphics/Viewport.h>
+#include <Urho3D/Graphics/RenderPath.h>
+#include <Urho3D/Resource/ResourceCache.h>
+#include <Urho3D/Input/Input.h>
+#include <Urho3D/Input/InputEvents.h>
+
 #include "Main.h"
 #include "framework/src/Controller.h"
 #include "framework/src/State.h"
@@ -83,4 +89,28 @@ void Main::Start()
     dzone->SetFogEnd(60.0f);
 
     SubscribeToEvents();
+
+    //-----add in the renderpath
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    Viewport* vp = GetSubsystem<Renderer>()->GetViewport(0);
+    RenderPath* rp = vp->GetRenderPath();
+    rp->Append(cache->GetResource<XMLFile>("RenderPaths/Glow.xml"));
+    // Make the bloom mixing parameter more pronounced
+    //effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.9f, 0.6f));
+    rp->SetEnabled("Glow", false);
+    vp->SetRenderPath(rp);
+
+    //custom keyhandling
+    SubscribeToEvent(E_KEYDOWN, URHO3D_HANDLER(Main, HandleKeyDown));
+}
+
+void Main::HandleKeyDown(StringHash eventType, VariantMap& eventData)
+{
+    Input* input = GetSubsystem<Input>();
+    if (input->GetKeyPress('R'))
+    {
+        RenderPath* rp = GetSubsystem<Renderer>()->GetViewport(0)->GetRenderPath();
+       rp->ToggleEnabled("Glow");
+    }
+
 }

@@ -8,10 +8,8 @@
 
 namespace Urho3D
 {
-
 class Node;
 class Scene;
-
 }
 
 class CameraLogic;
@@ -19,16 +17,19 @@ class CameraLogic;
 
 class Main : public ApplicationHandler
 {
-    	URHO3D_OBJECT(Main,ApplicationHandler);
+    URHO3D_OBJECT(Main,ApplicationHandler);
 
 public:
-	Main(Context* context);
-    	~Main();
+    Main(Context* context);
+     ~Main();
 
-    	virtual void Start();
+    virtual void Start();
+
+protected:
+    void HandleKeyDown(StringHash eventType, VariantMap& eventData);
 
 private:
-	ChmupDebugLevel* level_;
+    ChmupDebugLevel* level_;
     //SharedPtr<Node> characterNode_;
 };
 #endif
