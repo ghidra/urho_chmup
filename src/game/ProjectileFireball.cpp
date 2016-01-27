@@ -50,7 +50,8 @@ void ProjectileFireball::SetupLocal()
 
     //Color myCol = Color(Random(1.0f),Random(1.0f),Random(1.0f),1.0f);
 
-    //rmat.shaderParameters["ObjectColor"]=Variant(myCol);//single quotes didnt work
+    cmat->SetShaderParameter("Direction", dir_.Normalized() );//single quotes didnt work
+    cmat->SetShaderParameter("Speed", dir_.Length() );//single quotes didnt work
 
     StaticModel* obj = node_->GetComponent<StaticModel>();
     obj->SetMaterial(cmat);

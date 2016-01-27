@@ -11,17 +11,30 @@ varying vec4 vWorldPos;
 varying vec4 vIPos;
 
 #ifdef COMPILEVS
-uniform mat3  cObjectRotation; 
-uniform sampler2D sNormalMap;
+uniform vec3 cDirection;
+uniform float cSpeed;
+//uniform sampler2D sNormalMap;
 #endif
 
 //#ifdef COMPILEPS
 //https://www.shadertoy.com/view/4sfGzS
 //https://www.shadertoy.com/view/MdfGRX#
 
-#define USE_PROCEDURAL
+#ifdef DIFFMAP
 
-#ifdef USE_PROCEDURAL
+float noise( in vec3 x )
+{
+    vec3 p = floor(x);
+    vec3 f = fract(x);
+    f = f*f*(3.0-2.0*f);
+    
+    vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
+    vec2 rg = texture2D( sNormalMap, (uv+0.5)/256.0, -100.0 ).yx;//this function was not available on the laptop
+        //vec2 rg = texture2D( sNormalMap, (uv+0.5)/256.0 ).yx;
+    return mix( rg.x, rg.y, f.z );
+}
+
+#else
 
 float hash( float n ) { return fract(sin(n)*753.5453123); }
 float noise( in vec3 x )
@@ -35,20 +48,6 @@ float noise( in vec3 x )
                    mix( hash(n+157.0), hash(n+158.0),f.x),f.y),
                mix(mix( hash(n+113.0), hash(n+114.0),f.x),
                    mix( hash(n+270.0), hash(n+271.0),f.x),f.y),f.z);
-}
-
-#else
-
-float noise( in vec3 x )
-{
-    vec3 p = floor(x);
-    vec3 f = fract(x);
-	f = f*f*(3.0-2.0*f);
-	
-	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec2 rg = texture2D( sNormalMap, (uv+0.5)/256.0, -100.0 ).yx;//this function was not available on the laptop
-        //vec2 rg = texture2D( sNormalMap, (uv+0.5)/256.0 ).yx;
-	return mix( rg.x, rg.y, f.z );
 }
 
 #endif
@@ -68,6 +67,23 @@ float fbm( in vec3 x )
     return f*1.2;
 }
 
+#ifdef COMPILEVS
+float bias(float t, float b)
+{
+    return (t / ((((1.0/b) - 2.0)*(1.0 - t))+1.0));
+}
+#endif
+#ifdef GAIN
+float gain(float t,float g)
+{
+    if(t < 0.5)
+    {     
+        return bias(t * 2.0,g)/2.0;   
+    }else{
+        return bias(t * 2.0 - 1.0,1.0 - g)/2.0 + 0.5; 
+    }
+}
+#endif
 
 void VS()
 {
@@ -75,11 +91,11 @@ void VS()
 
     //modify positions
     float n = fbm(iPos.xyz+vec3(0.0,-cElapsedTime,0.0));
-    vec3 disp = iNormal*(n*0.5);
+    vec3 disp = iNormal*n;
     //get the dot of normal and direction
-    float d = dot( iNormal, vec3(0.0,1.0,0.0) );
-    float cd = clamp(d,0.25,1.0);
-    vec3 worldPos = ((iPos+vec4(disp,0.0)*d*cd*2.0) * modelMatrix).xyz;
+    float d = dot( iNormal, -cDirection );
+    float cd = bias( clamp(d,0.1,1.0), 0.05 );
+    vec3 worldPos = ((iPos+(vec4(disp,0.0)*cd*cSpeed*0.01)) * modelMatrix).xyz;
 
     //vec3 worldPos = GetWorldPos(modelMatrix);
     gl_Position = GetClipPos(worldPos);
@@ -98,13 +114,9 @@ void VS()
 
 void PS()
 {
-    vec4 diffColor = cMatDiffColor;
-    vec4 diffInput = texture2D(sDiffMap, vTexCoord2);
-
-    //vec3 n = vec3(fbm(vTexCoord4.xyz));
-    //vec3 n = vec3(fbm(vWorldPos.xyz));
-    vec3 n = vec3(fbm(vIPos.xyz));
+    float bias = fbm(vIPos.xyz);
+    vec3 c = mix(vec3(1.0,1.0,0.0),vec3(1.0,0.0,0.0),bias);
 
     //gl_FragColor = diffColor * diffInput;
-    gl_FragColor = vec4(n,1.0);
+    gl_FragColor = vec4(c,1.0);
 }
