@@ -39,7 +39,7 @@ void Obstacle::RegisterObject(Context* context)
 
 void Obstacle::Start()
 {
-    SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(Obstacle, HandleNodeCollision));
+    //SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(Obstacle, HandleNodeCollision));
 }
 
 void Obstacle::Setup()
@@ -60,7 +60,59 @@ void Obstacle::FixedUpdate(float timeStep)
     Actor::FixedUpdate(timeStep);
 }
 //----
-void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
+void Obstacle::TakeDamage(const float amount, const Vector3 pos, const Vector3 dir, const unsigned level, const enum DamageType type)
+{
+    Actor::TakeDamage(amount,pos,dir,level,type);
+    
+    //if health is low, destroy the obstacle
+    if(health_<=0.0f)
+    {
+        //lets make some more nodes and cubes for debris
+        //ResourceCache* cache = GetSubsystem<ResourceCache>();
+        Vector3 wp = node_->GetWorldPosition();
+
+        for(unsigned i=0; i<4+unsigned(Random(6));++i)
+        {
+            Node* d = node_->GetScene()->CreateChild("debris");
+            ObstacleDebris* od = d->CreateComponent<ObstacleDebris>();
+            od->Setup();
+            RigidBody* rb = d->GetComponent<RigidBody>();
+
+            Vector3 rp = Vector3( Random(-1.0f,1.0f), Random(-1.0f,1.0f), Random(-1.0f,1.0f) );
+            Vector3 ndir = dir.Normalized().Lerp( rp.Normalized(), 0.1);
+
+            d->SetWorldPosition( Vector3(wp+rp) );
+            rb->ApplyImpulse(ndir*Random(20.0f));
+
+            /*StaticModel* sm = d->CreateComponent<StaticModel>();
+            sm->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
+            RigidBody* rb = d->CreateComponent<RigidBody>();
+            CollisionShape* cs = d->CreateComponent<CollisionShape>();
+
+            rb->SetUseGravity(true);
+            cs->SetBox(Vector3(1.0f,1.0f,1.0f));
+            d->SetScale(0.35f);
+            rb->SetCollisionLayer(32);
+            rb->SetCollisionMask(63);
+            rb->SetMass(1.0f);
+            //Obstacle* p = node->CreateComponent<Obstacle>();
+            //p->Setup();
+            //rb->SetEnabled(true);*/
+            
+        }
+        //make a pick up maybe
+        float probability = Random();
+        if(probability<0.5)
+         {
+            Node* pu = node_->GetScene()->CreateChild("pickup");
+            pu->SetWorldPosition( wp );
+            PickUpGun* pug = pu->CreateComponent<PickUpGun>();
+            pug->Setup();
+         }   
+        node_->Remove();
+    }
+}
+/*void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
 {
     using namespace NodeCollision;
 
@@ -93,21 +145,6 @@ void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
 
             d->SetWorldPosition( Vector3(wp+rp) );
             rb->ApplyImpulse(dir*Random(20.0f));
-
-            /*StaticModel* sm = d->CreateComponent<StaticModel>();
-            sm->SetModel(cache->GetResource<Model>("Models/Box.mdl"));
-            RigidBody* rb = d->CreateComponent<RigidBody>();
-            CollisionShape* cs = d->CreateComponent<CollisionShape>();
-
-            rb->SetUseGravity(true);
-            cs->SetBox(Vector3(1.0f,1.0f,1.0f));
-            d->SetScale(0.35f);
-            rb->SetCollisionLayer(32);
-            rb->SetCollisionMask(63);
-            rb->SetMass(1.0f);
-            //Obstacle* p = node->CreateComponent<Obstacle>();
-            //p->Setup();
-            //rb->SetEnabled(true);*/
             
         }
         //make a pick up maybe
@@ -122,4 +159,4 @@ void Obstacle::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
         node_->Remove();
     }
 
-}
+}*/

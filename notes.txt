@@ -1,5 +1,6 @@
 left off:
 
+-camera shake on weapon fire
 -weapon visual referense of realoading and ammo capacity
 -making a gui type of thing where I make geo to represent ammo
 	-maybe custom geo, or just a box pre ammo

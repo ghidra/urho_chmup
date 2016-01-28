@@ -30,10 +30,12 @@ public:
     virtual void Start();
     virtual void FixedUpdate(float timeStep);
     virtual void Setup();
+    virtual void TakeDamage(const float amount, const Vector3 pos = Vector3(), const Vector3 dir= Vector3(), const unsigned level = 0, const enum DamageType type = DT_BALISTIC);//called from something that hits this... like a projectile
 
-protected:
 
-    virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
+//protected:
+
+    //virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
    
 };
 #endif
