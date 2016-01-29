@@ -1,16 +1,32 @@
 <renderpath>
-    <rendertarget name="Stow" tag="Glow" sizedivisor="4 4" format="rgb"  />
-    <rendertarget name="edge" tag="Glow" sizedivisor="1 1" format="rgb"  />
+    <rendertarget name="stow" tag="Glow" sizedivisor="1 1" format="rgb"  />
+    <rendertarget name="glowmatte" tag="Glow" sizedivisor="4 4" format="rgb" filter="true" />
+    <rendertarget name="glowblur" tag="Glow" sizedivisor="4 4" format="rgb" filter="true" />
 
-    <command type="quad" tag="Glow" vs="Stow" ps="Stow" output="Stow">
+    <command type="quad" tag="Glow" vs="Stow" ps="Stow" output="stow">
         <texture unit="diffuse" name="viewport" />
     </command>
 	
+    <!--render the matte as a pass-->
     <command type="scenepass" tag="Glow" pass="glow" sort="backtofront" metadata="base" />
-    
-    <command type="quad" tag="Glow" vs="GlowQuad" ps="GlowQuad" output="viewport">
+    <!--use the matte to isolate color from te viewport-->
+    <command type="quad" tag="Glow" vs="GlowQuad" ps="GlowQuad" psdefines="MATTE" output="glowmatte">
+        <!--<parameter name="BloomThreshold" value="0.3" />-->
         <texture unit="diffuse" name="stow" />
         <texture unit="normal" name="viewport" />
+    </command>
+    <!--now blur the pass before compositing-->
+    <command type="quad" tag="Glow" vs="GlowQuad" ps="GlowQuad" psdefines="BLURH" output="glowblur">
+        <texture unit="diffuse" name="glowmatte" />
+    </command>
+    <!--back int matte rendertarget to save n rendertargets-->
+    <command type="quad" tag="Glow" vs="GlowQuad" ps="GlowQuad" psdefines="BLURV" output="glowmatte">
+        <texture unit="diffuse" name="glowblur" />
+    </command>
+    
+    <command type="quad" tag="Glow" vs="GlowQuad" ps="GlowQuad" psdefines="COMBINE" output="viewport">
+        <texture unit="diffuse" name="stow" />
+        <texture unit="normal" name="glowmatte" />
     </command>
 
 </renderpath>
