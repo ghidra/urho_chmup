@@ -1,5 +1,6 @@
 left off:
 
+-projectile material needs a position offset per projectile so the noise isnt so uniform for follow up projectiles
 -camera shake on weapon fire
 -weapon visual referense of realoading and ammo capacity
 -making a gui type of thing where I make geo to represent ammo

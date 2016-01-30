@@ -97,7 +97,7 @@ void Main::Start()
     rp->Append(cache->GetResource<XMLFile>("RenderPaths/Glow.xml"));
     // Make the bloom mixing parameter more pronounced
     //effectRenderPath->SetShaderParameter("BloomMix", Vector2(0.9f, 0.6f));
-    rp->SetEnabled("Glow", false);
+    rp->SetEnabled("Glow", true);
     vp->SetRenderPath(rp);
 
     //custom keyhandling

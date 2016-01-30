@@ -67,12 +67,11 @@ float fbm( in vec3 x )
     return f*1.2;
 }
 
-#ifdef COMPILEVS
 float bias(float t, float b)
 {
     return (t / ((((1.0/b) - 2.0)*(1.0 - t))+1.0));
 }
-#endif
+
 #ifdef GAIN
 float gain(float t,float g)
 {
@@ -90,12 +89,12 @@ void VS()
     mat4 modelMatrix = iModelMatrix;
 
     //modify positions
-    float n = fbm(iPos.xyz+vec3(0.0,-cElapsedTime,0.0));
+    float n = fbm((iPos.xyz*0.5)+vec3(0.0,-cElapsedTime,0.0));
     vec3 disp = iNormal*n;
     //get the dot of normal and direction
-    float d = dot( iNormal, -cDirection );
-    float cd = bias( clamp(d,0.1,1.0), 0.05 );
-    vec3 worldPos = ((iPos+(vec4(disp,0.0)*cd*cSpeed*0.01)) * modelMatrix).xyz;
+    float d = dot( iNormal, -cDirection );//just get the dot
+    float cd = bias( clamp(d,0.0,1.0), 0.15 )*n;//this limits the dot deformation and mults noise back it so it goes up and down
+    vec3 worldPos = ((iPos+(vec4(disp,0.0)*cd*clamp(cSpeed,100.0,200.0)*0.025)) * modelMatrix).xyz;//limit speed to 200 otherwise deformation is insane
 
     //vec3 worldPos = GetWorldPos(modelMatrix);
     gl_Position = GetClipPos(worldPos);
@@ -114,8 +113,8 @@ void VS()
 
 void PS()
 {
-    float bias = fbm(vIPos.xyz);
-    vec3 c = mix(vec3(1.0,1.0,0.0),vec3(1.0,0.0,0.0),bias);
+    float colormix = fbm(vIPos.xyz*0.5);
+    vec3 c = mix(vec3(1.0,1.0,0.0),vec3(1.0,0.0,0.0),bias(colormix,0.4));
 
     //gl_FragColor = diffColor * diffInput;
     #ifdef GLOW
