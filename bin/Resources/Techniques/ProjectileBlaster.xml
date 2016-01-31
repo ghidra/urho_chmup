@@ -1,0 +1,5 @@
+<technique vs="ProjectileBlaster" ps="ProjectileBlaster">
+    <pass name="base" />
+    <pass name="depth" vs="Depth" ps="Depth" />
+    <pass name="glow" ps="Glow" psdefines="GLOW"/>
+</technique>

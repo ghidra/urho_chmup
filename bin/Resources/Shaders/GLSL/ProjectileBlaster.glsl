@@ -18,12 +18,6 @@ uniform float cSpeed;
 //uniform sampler2D sNormalMap;
 #endif
 
-//#ifdef COMPILEPS
-//https://www.shadertoy.com/view/4sfGzS
-//https://www.shadertoy.com/view/MdfGRX#
-
-
-
 void VS()
 {
     mat4 modelMatrix = iModelMatrix;
@@ -54,7 +48,7 @@ void VS()
 void PS()
 {
     float colormix = fbm(vIPos.xyz*0.5);
-    vec3 c = mix(vec3(1.0,1.0,0.0),vec3(1.0,0.0,0.0),bias(colormix,0.4));
+    vec3 c = mix(vec3(0.0,0.0,1.0),vec3(0.0,1.0,0.0),bias(colormix,0.4));
 
     //gl_FragColor = diffColor * diffInput;
     #ifdef GLOW

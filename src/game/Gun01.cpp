@@ -26,6 +26,7 @@
 #include "../framework/src/Weapon.h"
 #include "../framework/src/Projectile.h"
 #include "ProjectileFireball.h"
+#include "ProjectileBlaster.h"
 
 Gun01::Gun01(Context* context) :
     Weapon(context),
@@ -35,7 +36,8 @@ Gun01::Gun01(Context* context) :
     rotationRange_(45.0f),
     rotation_(Quaternion()),
     projectileSpeed_(80.0f),
-    projectileRange_(20.0f)
+    projectileRange_(20.0f),
+    projectileType_(PT_FIREBALL)
 {
     //CameraLogic::RegisterObject(context);
     //SetUpdateEventMask(USE_FIXEDUPDATE);
@@ -125,9 +127,31 @@ void Gun01::SpawnProjectile()
 
     Recoil(dir);
 
-    ProjectileFireball* projectile_ = projectileNode_->CreateComponent<ProjectileFireball>();
+    switch(projectileType_)
+    {
+        case PT_FIREBALL:
+        {
+            ProjectileFireball* projectile_ = projectileNode_->CreateComponent<ProjectileFireball>();
+             projectile_->Setup( projectileParms );
+            break;
+        }
+        case PT_BLASTER:
+        {
+            ProjectileBlaster* projectile_ = projectileNode_->CreateComponent<ProjectileBlaster>();
+             projectile_->Setup( projectileParms );
+            break;
+        }
+    }
+    //if()
+    //{
+    //P
+    //}
+    //else
+    //{
+    
+    //}
     //projectile_->Setup(Vector3(0.0f,0.0f,1.0f));
-    projectile_->Setup( projectileParms );
+    //projectile_->Setup( projectileParms );
    
 }
 //------setting data from pickups most likely
@@ -142,4 +166,5 @@ void Gun01::SetRotationSpeed(const float speed){rotationSpeed_=speed;}
 void Gun01::SetRotationRange(const float range){rotationRange_=range;}
 void Gun01::SetProjectileSpeed(const float speed){projectileSpeed_=speed;}
 void Gun01::SetProjectileRange(const float range){projectileRange_=range;}
+void Gun01::SetProjectileType(const unsigned type){projectileType_=static_cast<ProjectileType>(type);}
 

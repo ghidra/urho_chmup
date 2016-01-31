@@ -15,6 +15,13 @@ class Scene;
 
 }
 
+enum ProjectileType
+{
+    PT_FIREBALL,
+    PT_BLASTER,
+    PT_MAX = PT_BLASTER
+};
+
 class Gun01 : public Weapon
 {
 
@@ -39,6 +46,7 @@ public:
     void SetRotationRange(const float range);
     void SetProjectileSpeed(const float speed);
     void SetProjectileRange(const float range);
+    void SetProjectileType(const unsigned type);
 
 protected:
     //virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
@@ -47,14 +55,16 @@ protected:
 
 private:
 
-	unsigned short numProjectiles_;
-	float rotationTimer_;//to increment a timer for rotation
+    unsigned short numProjectiles_;
+    float rotationTimer_;//to increment a timer for rotation
     Quaternion rotation_;//the angle where we left off on rotation
     
-	float rotationSpeed_;//speed to rotate at
-	float rotationRange_;//allowable rotation range
-	float projectileSpeed_;
-	float projectileRange_;
-   
+    float rotationSpeed_;//speed to rotate at
+    float rotationRange_;//allowable rotation range
+    float projectileSpeed_;
+    float projectileRange_;
+
+    ProjectileType projectileType_;
+
 };
 #endif

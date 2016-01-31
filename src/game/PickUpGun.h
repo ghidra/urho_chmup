@@ -4,6 +4,7 @@
 #pragma once
 
 #include "../framework/src/PickUp.h"
+#include "Gun01.h"
 
 using namespace Urho3D;
 
@@ -40,6 +41,8 @@ protected:
     float fireRate_;
     unsigned magSize_;
     float magSpeed_;
+
+    ProjectileType projectileType_;
    
 };
 #endif
