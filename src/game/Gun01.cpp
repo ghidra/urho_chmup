@@ -37,7 +37,7 @@ Gun01::Gun01(Context* context) :
     rotation_(Quaternion()),
     projectileSpeed_(80.0f),
     projectileRange_(20.0f),
-    projectileType_(PT_FIREBALL)
+    projectileType_(PT_BLASTER)
 {
     //CameraLogic::RegisterObject(context);
     //SetUpdateEventMask(USE_FIXEDUPDATE);

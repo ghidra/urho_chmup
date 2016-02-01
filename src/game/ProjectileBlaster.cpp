@@ -56,7 +56,7 @@ void ProjectileBlaster::SetupLocal()
     StaticModel* obj = node_->GetComponent<StaticModel>();
     obj->SetMaterial(cmat);
 
-    node_->SetScale(1.0f);
+    node_->SetScale(0.5f);
 }
 
 

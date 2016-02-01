@@ -23,12 +23,11 @@ void VS()
     mat4 modelMatrix = iModelMatrix;
 
     //modify positions
-    float n = fbm((iPos.xyz*0.5)+vec3(0.0,-cElapsedTime,0.0));
-    vec3 disp = iNormal*n;
+    //float n = fbm((iPos.xyz*0.5)+vec3(0.0,-cElapsedTime,0.0));
     //get the dot of normal and direction
     float d = dot( iNormal, -cDirection );//just get the dot
-    float cd = bias( clamp(d,0.0,1.0), 0.15 )*n;//this limits the dot deformation and mults noise back it so it goes up and down
-    vec3 worldPos = ((iPos+(vec4(disp,0.0)*cd*clamp(cSpeed,100.0,200.0)*0.025)) * modelMatrix).xyz;//limit speed to 200 otherwise deformation is insane
+    float cd = bias( fit(d,-1.0,1.0,0.0,1.0), 0.2 );//this limits the dot deformation and mults noise back it so it goes up and down
+    vec3 worldPos = ((iPos+(vec4(-cDirection,0.0)*cd*clamp(cSpeed,5.0,15.0)*0.4)) * modelMatrix).xyz;//limit speed to 200 otherwise deformation is insane
 
     //vec3 worldPos = GetWorldPos(modelMatrix);
     gl_Position = GetClipPos(worldPos);
@@ -47,13 +46,13 @@ void VS()
 
 void PS()
 {
-    float colormix = fbm(vIPos.xyz*0.5);
+    float colormix = fbm(vIPos.xyz*vec3(0.1,0.1,0.1));
     vec3 c = mix(vec3(0.0,0.0,1.0),vec3(0.0,1.0,0.0),bias(colormix,0.4));
-
+    float hotedge = bias(dot(vNormal,normalize(cCameraPosPS-vWorldPos.xyz)),0.4);
     //gl_FragColor = diffColor * diffInput;
     #ifdef GLOW
         gl_FragColor =vec4(1.0,1.0,1.0,1.0);
     #else
-        gl_FragColor = vec4(c,1.0);
+        gl_FragColor = vec4(clamp(c+vec3((1-hotedge)*0.5),0.0,1.0),1.0);
     #endif
 }

@@ -58,3 +58,9 @@ float gain(float t,float g)
         return bias(t * 2.0 - 1.0,1.0 - g)/2.0 + 0.5; 
     }
 }
+
+float fit(float v, float l1, float h1, float l2, float h2)
+{
+    return clamp( l2 + (v - l1) * (h2 - l2) / (h1 - l1), l2,h2);
+
+}
