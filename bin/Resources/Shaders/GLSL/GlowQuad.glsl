@@ -7,6 +7,13 @@ varying vec2 vTexCoord;
 varying vec2 vScreenPos;
 varying vec4 vScreenPos4;
 
+//uniform sampler2D sWeightMap0;
+uniform sampler2D sDetailMap1;
+#ifdef MIX
+uniform sampler2D sDetailMap2;
+uniform sampler2D sDetailMap3;
+#endif
+
 #ifdef COMPILEPS
 float bias(float t, float b)
 {
@@ -38,12 +45,20 @@ void VS()
 void PS()
 {
 
-  vec4 normal = texture2D(sNormalMap,vScreenPos);
+  //vec4 normal = texture2D(sNormalMap,vScreenPos);
   vec4 diff = texture2D(sDiffMap,vScreenPos);
+  vec4 layer1 = texture2D(sDetailMap1,vScreenPos);
+  #ifdef MIX
+    vec4 layer2 = texture2D(sDetailMap2,vScreenPos);
+    vec4 layer3 = texture2D(sDetailMap3,vScreenPos);
+    vec3 rgb = max(diff.xyz,layer1.xyz);
+    rgb = max(rgb,layer2.xyz);
+    rgb = max(rgb,layer3.xyz);
+    gl_FragColor = vec4(rgb,1.0);
+  #endif
 
-  
   #ifdef MATTE
-      gl_FragColor = normal*diff*bias(normal.g,0.1);
+      gl_FragColor = layer1*diff*bias(layer1.g,0.1);
   #endif
   #ifdef BLURH
     vec3 rgb = texture2D(sDiffMap, vTexCoord + vec2(0.0, 0.0) * cGBufferInvSize.xy).rgb * 0.3;
@@ -81,7 +96,8 @@ void PS()
   #endif
   #ifdef COMBINE
     //gl_FragColor = vec4(normal.rgb,1.0);
-    gl_FragColor = vec4((diff+(normal*0.5)).rgb,1.0);
+    //gl_FragColor = vec4(layer1.xyz*2.0,1.0);
+    gl_FragColor = vec4((diff+(layer1*2.0)).rgb,1.0);
   #endif
   //gl_FragColor = color+diff;
   //;
