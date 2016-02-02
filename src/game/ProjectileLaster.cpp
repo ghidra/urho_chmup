@@ -10,38 +10,39 @@
 #include <Urho3D/Physics/PhysicsWorld.h>
 #include <Urho3D/Physics/RigidBody.h>
 
-#include "ProjectileBlaster.h"
+#include "ProjectileLaser.h"
 
-ProjectileBlaster::ProjectileBlaster(Context* context) :
+ProjectileLaser::ProjectileLaser(Context* context) :
     Projectile(context)
 {
+    //mesh_ = String("Cylinder.mdl");
     mesh_ = String("Sphere.mdl");
     speed_ = 10.0f;
 }
-ProjectileBlaster::~ProjectileBlaster(){}
+ProjectileLaser::~ProjectileLaser(){}
 //-------------------
 //-------------------
-void ProjectileBlaster::RegisterObject(Context* context)
+void ProjectileLaser::RegisterObject(Context* context)
 {
-    context->RegisterFactory<ProjectileBlaster>();
+    context->RegisterFactory<ProjectileLaser>();
 }
 
-void ProjectileBlaster::Start()
+void ProjectileLaser::Start()
 {
     Projectile::Start();
-    //SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(ProjectileBlaster, HandleNodeCollision));
+    //SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(ProjectileLaser, HandleNodeCollision));
 }
-void ProjectileBlaster::Setup(const Vector3 direction)
+void ProjectileLaser::Setup(const Vector3 direction)
 {
     Projectile::Setup(direction);
     SetupLocal();
 }
-void ProjectileBlaster::Setup(VariantMap& parms)
+void ProjectileLaser::Setup(VariantMap& parms)
 {
     Projectile::Setup(parms);
     SetupLocal();
 }
-void ProjectileBlaster::SetupLocal()
+void ProjectileLaser::SetupLocal()
 {
     ResourceCache* cache = GetSubsystem<ResourceCache>();
 
@@ -49,12 +50,12 @@ void ProjectileBlaster::SetupLocal()
     SharedPtr<Material> cmat = bmat->Clone();
 
     cmat->SetShaderParameter("Direction", dir_.Normalized() );//single quotes didnt work
-    cmat->SetShaderParameter("Speed", dir_.Length() );//single quotes didnt work
+    cmat->SetShaderParameter("Speed", 200.0f );//dir_.Length()//single quotes didnt work
 
     StaticModel* obj = node_->GetComponent<StaticModel>();
     obj->SetMaterial(cmat);
 
-    node_->SetScale(0.5f);
+    node_->SetScale(1.5f);
 }
 
 

@@ -29,7 +29,7 @@ void ProjectileFireball::RegisterObject(Context* context)
 void ProjectileFireball::Start()
 {
     Projectile::Start();
-    SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(ProjectileFireball, HandleNodeCollision));
+    //SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(ProjectileFireball, HandleNodeCollision));
 }
 void ProjectileFireball::Setup(const Vector3 direction)
 {

@@ -95,6 +95,7 @@ void Character::ModifyWeapon(VariantMap& parms)
         if( parms.Contains("magSize") && parms.Contains("magSpeed") ) w->SetMagSize( parms["magSize"].GetInt(), parms["magSpeed"].GetFloat() );
         if( parms.Contains("fireRate") ) w->SetFireRate( parms["fireRate"].GetFloat() );
         if( parms.Contains("projectileType") ) w->SetProjectileType( parms["projectileType"].GetInt() );
+        if( parms.Contains("continuous") ) w->SetProjectileContinuous( parms["continuous"].GetBool() );
     }
 
 }

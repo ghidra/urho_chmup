@@ -24,6 +24,7 @@
 #include "game/PickUpGun.h"
 #include "game/ProjectileFireball.h"
 #include "game/ProjectileBlaster.h"
+#include "game/ProjectileLaser.h"
 //#include "game/CustomGeo.h"
 
 #include <Urho3D/DebugNew.h>
@@ -42,6 +43,7 @@ Main::Main(Context* context) :
     Projectile::RegisterObject(context);
     ProjectileFireball::RegisterObject(context);
     ProjectileBlaster::RegisterObject(context);
+    ProjectileLaser::RegisterObject(context);
     Obstacle::RegisterObject(context);
     ObstacleDebris::RegisterObject(context);
     PickUpGun::RegisterObject(context);
@@ -54,7 +56,7 @@ void Main::Start()
     ApplicationHandler::Start();
 
     applicationInput_ = new ApplicationInput(context_);
-    SetApplicationInput(applicationInput_);//this also set up the basic camera
+    SetApplicationInput(applicationInput_,false);//this also set up the basic camera
     applicationInput_->SetCameraType(String("shmup"));
     
     VariantMap camParms;

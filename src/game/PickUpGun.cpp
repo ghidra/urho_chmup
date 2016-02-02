@@ -46,6 +46,14 @@ void PickUpGun::Setup()
     magSpeed_ = Random(0.25f,2.0f);
 
     projectileType_ = static_cast<ProjectileType>( floor(Random(0.0,static_cast<float>(PT_MAX))+0.5f ));
+    if(projectileType_==PT_LASER)
+    {
+        continuous_=true;
+    }
+    else
+    {
+        continuous_=false;   
+    }
 
     //node_->SetPosition(Vector3(4.0f, 8.0f, 0.0f));//objectNode
     //node_->SetRotation(Quaternion(33.0f,78.0f,24.0f));
@@ -81,6 +89,7 @@ void PickUpGun::HandleNodeCollision(StringHash eventType, VariantMap& eventData)
             weaponParms["magSize"] = magSize_;
             weaponParms["magSpeed"] = magSpeed_;
             weaponParms["projectileType"] = static_cast<unsigned>(projectileType_);
+            weaponParms["continuous"] = continuous_;
 
             character->ModifyWeapon(weaponParms);
         }

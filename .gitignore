@@ -13,4 +13,5 @@ launch.bat
 
 bin/CoreData
 bin/Data
+bin/Resources/Screenshots
 bin/chmup

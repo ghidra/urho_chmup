@@ -4,6 +4,7 @@
 #pragma once
 
 #include "../framework/src/Weapon.h"
+#include "constants.h"
 
 using namespace Urho3D;
 
@@ -14,13 +15,6 @@ class Node;
 class Scene;
 
 }
-
-enum ProjectileType
-{
-    PT_FIREBALL,
-    PT_BLASTER,
-    PT_MAX = PT_BLASTER
-};
 
 class Gun01 : public Weapon
 {
@@ -47,6 +41,7 @@ public:
     void SetProjectileSpeed(const float speed);
     void SetProjectileRange(const float range);
     void SetProjectileType(const unsigned type);
+    void SetProjectileContinuous(const bool continuous);
 
 protected:
     //virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
@@ -65,6 +60,8 @@ private:
     float projectileRange_;
 
     ProjectileType projectileType_;
+    bool continuous_;//for continus type projectiles, ie laser
+    bool continuous_spawned_;//weather a continuous projectile has been spawned
 
 };
 #endif
