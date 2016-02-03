@@ -17,7 +17,7 @@ ProjectileLaser::ProjectileLaser(Context* context) :
 {
     //mesh_ = String("Cylinder.mdl");
     mesh_ = String("Sphere.mdl");
-    speed_ = 10.0f;
+    speed_ = 0.0f;
 }
 ProjectileLaser::~ProjectileLaser(){}
 //-------------------
@@ -56,6 +56,11 @@ void ProjectileLaser::SetupLocal()
     obj->SetMaterial(cmat);
 
     node_->SetScale(1.5f);
+    //force speed to 0
+    speed_=0.0f;
+    RigidBody* body = node_->GetComponent<RigidBody>();
+    node_->SetWorldPosition(node_->GetWorldPosition()+(Vector3::FORWARD*12.0));
+    body->SetLinearVelocity(body->GetLinearVelocity()*0.05f);
 }
 
 

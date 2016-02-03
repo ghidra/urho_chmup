@@ -31,16 +31,11 @@
 
 Gun01::Gun01(Context* context) :
     Weapon(context),
-    numProjectiles_(1),
     rotationTimer_(0.0f),
     rotationSpeed_(1200.0f),
     rotationRange_(45.0f),
     rotation_(Quaternion()),
-    projectileSpeed_(80.0f),
-    projectileRange_(20.0f),
-    projectileType_(PT_FIREBALL),
-    continuous_(false),
-    continuous_spawned_(false)
+    projectileType_(PT_LASER)
 {
     //CameraLogic::RegisterObject(context);
     //SetUpdateEventMask(USE_FIXEDUPDATE);
@@ -72,6 +67,9 @@ void Gun01::Setup()
     object->SetModel(cache->GetResource<Model>("Models/"+mesh_));
     object->SetMaterial(cache->GetResource<Material>("Materials/Jack.xml"));
     object->SetCastShadows(true);
+
+    if(projectileType_==PT_LASER)
+        SetProjectileContinuous(true);
 }
 
 /*void Gun01::FixedUpdate(float timeStep)
@@ -92,11 +90,11 @@ void Gun01::ReleaseFire()
 {
     Weapon::ReleaseFire();
 
-    if(continuous_ && continuous_spawned_)
-    {
-        continuous_spawned_=false;
+    //if(continuous_ && continuous_spawned_)
+    //{
+    //    continuous_spawned_=false;
         //likely need to remove the continuous projectile as well
-    }
+    //}
     /*
     firing_ = 0;
     firing_timer_ = 0.0f;
@@ -104,15 +102,15 @@ void Gun01::ReleaseFire()
     */
 }
 
-void Gun01::Recoil(const Vector3 dir)
+void Gun01::Recoil()
 {
     //try to move the ship a little
     RigidBody* ship = node_->GetParent()->GetComponent<RigidBody>();//this should be the main node that holds the whole ship
     if(ship!=NULL)
     {
         //debug_->Hud("recoil",String(dir));
-        Vector3 rdir = dir*-1.0f;
-        ship->ApplyImpulse(rdir*projectileSpeed_*0.075f);
+        Vector3 rdir = -ProjectileSpawnDirection_;
+        ship->ApplyImpulse(rdir*projectile_speed_*0.075f);
     }
 }
 
@@ -120,25 +118,25 @@ void Gun01::SpawnProjectile()
 {
     Vector3 pos = node_->GetWorldPosition();
     Quaternion rot = node_->GetWorldRotation();
-    Vector3 dir = rot*Vector3(0.0f,0.0f,1.0f);
-    Vector3 offpos = pos+dir;
+    ProjectileSpawnDirection_ = rot*Vector3(0.0f,0.0f,1.0f);
+    ProjectileSpawnPosition_ = pos+ProjectileSpawnDirection_;
 
     Node* projectileNode_;
     VariantMap projectileParms;
 
-    if(!continuous_spawned_)
-    {
-        projectileNode_ = node_->GetScene()->CreateChild("projectile");
-        projectileNode_->SetPosition(offpos);
+    //if(!continuous_spawned_)
+    //{
+    projectileNode_ = node_->GetScene()->CreateChild("projectile");
+    projectileNode_->SetPosition(ProjectileSpawnPosition_);
 
-        projectileParms["direction"] = dir;
-        projectileParms["range"] = projectileRange_;
-        projectileParms["speed"] = projectileSpeed_;
-        projectileParms["usegravity"] = false;
-        projectileParms["raytest"] = true;
-    }
+    projectileParms["direction"] = ProjectileSpawnDirection_;
+    projectileParms["range"] = projectile_range_;
+    projectileParms["speed"] = projectile_speed_;
+    projectileParms["usegravity"] = false;
+    projectileParms["raytest"] = true;
+    //}
 
-    Recoil(dir);
+    Recoil();
 
     switch(projectileType_)
     {
@@ -157,13 +155,13 @@ void Gun01::SpawnProjectile()
         case PT_LASER:
         {
             //debug_->Hud("PROJECTILE",String("LASER SPAWNED"));
-            if(!continuous_spawned_)
-            {
+            //if(!continuous_spawned_)
+            //{
                 //debug_->Hud("PROJECTILE",String("LASER"));
-                ProjectileLaser* projectile_ = projectileNode_->CreateComponent<ProjectileLaser>();
-                projectile_->Setup( projectileParms );
-                continuous_spawned_ = true;
-            }
+            ProjectileLaser* projectile_ = projectileNode_->CreateComponent<ProjectileLaser>();
+            projectile_->Setup( projectileParms );
+                //continuous_spawned_ = true;
+            //}
             break;
         }
     }
@@ -180,7 +178,6 @@ void Gun01::SpawnProjectile()
    
 }
 //------setting data from pickups most likely
-void Gun01::SetProjectileRate(const unsigned short rate){numProjectiles_=rate;}
 void Gun01::SetRotation(const float speed, const float range, const float offset)
 {
     rotationSpeed_=speed;
@@ -189,8 +186,6 @@ void Gun01::SetRotation(const float speed, const float range, const float offset
 }
 void Gun01::SetRotationSpeed(const float speed){rotationSpeed_=speed;}
 void Gun01::SetRotationRange(const float range){rotationRange_=range;}
-void Gun01::SetProjectileSpeed(const float speed){projectileSpeed_=speed;}
-void Gun01::SetProjectileRange(const float range){projectileRange_=range;}
+
 void Gun01::SetProjectileType(const unsigned type){projectileType_=static_cast<ProjectileType>(type);}
-void Gun01::SetProjectileContinuous(const bool continuous){continuous_=continuous;}
 

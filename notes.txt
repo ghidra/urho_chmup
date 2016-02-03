@@ -1,5 +1,6 @@
 left off:
 
+-laser kind of working, but i cant set the linear velocity to 0 for some reaosn
 -projectile material needs a position offset per projectile so the noise isnt so uniform for follow up projectiles
 -projectile eplosion on impact
 -new projectile, laser

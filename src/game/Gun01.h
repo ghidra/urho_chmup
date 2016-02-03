@@ -34,34 +34,27 @@ public:
     virtual void Fire(float timestep);
     virtual void ReleaseFire();
 
-    void SetProjectileRate(const unsigned short rate);//number of projectiles at once
     void SetRotation(const float speed, const float range, const float offset=0.0f);
     void SetRotationSpeed(const float speed);
     void SetRotationRange(const float range);
-    void SetProjectileSpeed(const float speed);
-    void SetProjectileRange(const float range);
+
     void SetProjectileType(const unsigned type);
-    void SetProjectileContinuous(const bool continuous);
+    
 
 protected:
     //virtual void HandleNodeCollision(StringHash eventType, VariantMap& eventData);
-    virtual void Recoil( const Vector3 dir );
+    virtual void Recoil();
     virtual void SpawnProjectile();
 
 private:
 
-    unsigned short numProjectiles_;
     float rotationTimer_;//to increment a timer for rotation
     Quaternion rotation_;//the angle where we left off on rotation
     
     float rotationSpeed_;//speed to rotate at
     float rotationRange_;//allowable rotation range
-    float projectileSpeed_;
-    float projectileRange_;
 
     ProjectileType projectileType_;
-    bool continuous_;//for continus type projectiles, ie laser
-    bool continuous_spawned_;//weather a continuous projectile has been spawned
 
 };
 #endif
