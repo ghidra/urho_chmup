@@ -160,6 +160,7 @@ void Gun01::SpawnProjectile()
                 //debug_->Hud("PROJECTILE",String("LASER"));
             ProjectileLaser* projectile_ = projectileNode_->CreateComponent<ProjectileLaser>();
             projectile_->Setup( projectileParms );
+            projectile_->SetParentWeaponNode(node_);//give the node, so that we can stick to it
                 //continuous_spawned_ = true;
             //}
             break;
