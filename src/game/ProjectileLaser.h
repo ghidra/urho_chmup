@@ -38,5 +38,10 @@ protected:
    virtual void Impact(Node* node, const Vector3 pos, const Vector3 dir);
 
    SharedPtr<Node> weapon_node_;
+
+private:
+   float laser_length_;//how long the laser should be
+   float laser_offset_;//offset from the tip of the weapon
+   Vector3 laser_position_offset_;
 };
 #endif

@@ -15,11 +15,14 @@
 #include "ProjectileLaser.h"
 
 ProjectileLaser::ProjectileLaser(Context* context) :
-    Projectile(context)
+    Projectile(context),
+    laser_length_(30.0f),
+    laser_offset_(1.0f),
+    laser_position_offset_(Vector3::FORWARD*((laser_length_/2.0f)+laser_offset_))
 {
     mesh_ = String("Cylinder.mdl");
     //mesh_ = String("Sphere.mdl");
-    collision_size_=3.0f;
+    collision_size_=1.0f;
     speed_ = 0.0f;
     ray_test_=false;
 }
@@ -57,11 +60,11 @@ void ProjectileLaser::FixedUpdate(float timeStep)
     Actor::FixedUpdate(timeStep);
     //now I can get the parent position and rotation and start following
     Vector3 newpos = weapon_node_->GetWorldPosition();
-    node_->SetWorldPosition(newpos);
+    node_->SetWorldPosition(newpos+laser_position_offset_);
 
     //check if weapon is firing
     Weapon* w = weapon_node_->GetDerivedComponent<Weapon>();
-    if(!w->IsFiring())
+    if(!w->IsFiring() || w->IsReloading())
     {
         node_->Remove();
     }
@@ -70,20 +73,27 @@ void ProjectileLaser::SetupLocal()
 {
     ResourceCache* cache = GetSubsystem<ResourceCache>();
 
-    Material* bmat = cache->GetResource<Material>( "Materials/ProjectileBlaster.xml");
+    Material* bmat = cache->GetResource<Material>( "Materials/ProjectileLaser.xml");
     SharedPtr<Material> cmat = bmat->Clone();
 
-    cmat->SetShaderParameter("Direction", dir_.Normalized() );//single quotes didnt work
-    cmat->SetShaderParameter("Speed", 200.0f );//dir_.Length()//single quotes didnt work
+    //cmat->SetShaderParameter("Direction", dir_.Normalized() );//single quotes didnt work
+    //cmat->SetShaderParameter("Speed", 200.0f );//dir_.Length()//single quotes didnt work
 
     StaticModel* obj = node_->GetComponent<StaticModel>();
     obj->SetMaterial(cmat);
 
-    node_->SetScale(Vector3(1.0,1.0,10.0));
+    //if this is a default conde, I have to rotate it 90
+    //which means the length is along the local y axis
+    node_->SetRotation(Quaternion(90.0f,0.0,0.0));
+
+    //StaticModel* obj = node_->GetComponent<StaticModel>();
+    obj->SetCastShadows(false);
+    
+    node_->SetScale(Vector3(1.0,laser_length_,1.0));
     //force speed to 0
     speed_=0.0f;
     RigidBody* body = node_->GetComponent<RigidBody>();
-    node_->SetWorldPosition(node_->GetWorldPosition()+(Vector3::FORWARD*20.0));
+    node_->SetWorldPosition(node_->GetWorldPosition()+laser_position_offset_);
     body->SetLinearVelocity(Vector3::ZERO);
 
     shape_->SetBox( Vector3(collision_size_, collision_size_,collision_size_) );

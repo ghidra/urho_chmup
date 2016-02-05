@@ -1,0 +1,5 @@
+<material>
+    <technique name="Techniques/ProjectileLaser.xml" />
+    <!--<parameter name="Direction" value="0.0 1.0 0.0" />
+    <parameter name="Speed" value="2.0" />-->
+</material>

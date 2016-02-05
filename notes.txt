@@ -1,6 +1,8 @@
 left off:
 
--laser kind of working, but i cant set the linear velocity to 0 for some reaosn
+-weapon needs to be looked at.. recoil occurs dring reloads.
+	-fireing should keep going after reload even if we have the buttons down
+	-currently lasers dont start again after reload
 -projectile material needs a position offset per projectile so the noise isnt so uniform for follow up projectiles
 -projectile eplosion on impact
 -new projectile, laser
