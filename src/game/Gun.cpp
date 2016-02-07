@@ -13,7 +13,6 @@
 #include <Urho3D/Graphics/Material.h>
 
 #include <Urho3D/Graphics/AnimationController.h>
-#include <Urho3D/Core/Context.h>
 #include <Urho3D/IO/MemoryBuffer.h>
 #include <Urho3D/Physics/PhysicsEvents.h>
 #include <Urho3D/Physics/PhysicsWorld.h>
@@ -21,15 +20,16 @@
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Scene/SceneEvents.h>
 
-#include "Gun01.h"
+#include "Gun.h"
 
 #include "../framework/src/Weapon.h"
+#include "Magazine.h"
 #include "../framework/src/Projectile.h"
 #include "ProjectileFireball.h"
 #include "ProjectileBlaster.h"
 #include "ProjectileLaser.h"
 
-Gun01::Gun01(Context* context) :
+Gun::Gun(Context* context) :
     Weapon(context),
     rotationTimer_(0.0f),
     rotationSpeed_(1200.0f),
@@ -43,13 +43,14 @@ Gun01::Gun01(Context* context) :
     //collision_mask_ = 33;
     firing_interval_=0.02;
     mesh_ = String("Box.mdl");
+    magazine_ = new Magazine(context);
 }
-Gun01::~Gun01(){}
+Gun::~Gun(){}
 //-------------------
 //-------------------
-void Gun01::RegisterObject(Context* context)
+void Gun::RegisterObject(Context* context)
 {
-    context->RegisterFactory<Gun01>();
+    context->RegisterFactory<Gun>();
 
 }
 
@@ -58,7 +59,7 @@ void Gun01::RegisterObject(Context* context)
     //SubscribeToEvent(GetNode(), E_NODECOLLISION, URHO3D_HANDLER(Gun01, HandleNodeCollision));
 
 }*/
-void Gun01::Setup()
+void Gun::Setup()
 {
     //Weapon::Setup();
     ResourceCache* cache = GetSubsystem<ResourceCache>();
@@ -76,7 +77,7 @@ void Gun01::Setup()
 {
     
 }*/
-void Gun01::Fire(float timeStep)
+void Gun::Fire(float timeStep)
 {
     Weapon::Fire(timeStep);
     //now we can rotate the turret if we have rotation values
@@ -86,7 +87,7 @@ void Gun01::Fire(float timeStep)
     node_->SetRotation(q);
     //debug_->Hud("gun rotation",String(q));
 }
-void Gun01::ReleaseFire()
+void Gun::ReleaseFire()
 {
     Weapon::ReleaseFire();
 
@@ -102,7 +103,7 @@ void Gun01::ReleaseFire()
     */
 }
 
-void Gun01::Recoil()
+void Gun::Recoil()
 {
     //try to move the ship a little
     RigidBody* ship = node_->GetParent()->GetComponent<RigidBody>();//this should be the main node that holds the whole ship
@@ -114,7 +115,7 @@ void Gun01::Recoil()
     }
 }
 
-void Gun01::SpawnProjectile()
+void Gun::SpawnProjectile()
 {
     Vector3 pos = node_->GetWorldPosition();
     Quaternion rot = node_->GetWorldRotation();
@@ -179,14 +180,19 @@ void Gun01::SpawnProjectile()
    
 }
 //------setting data from pickups most likely
-void Gun01::SetRotation(const float speed, const float range, const float offset)
+void Gun::SetMagSize(const unsigned size,  const float rate)
+{
+    Weapon::SetMagSize(size, rate);
+    magazine_->SetSize(size);
+}
+void Gun::SetRotation(const float speed, const float range, const float offset)
 {
     rotationSpeed_=speed;
     rotationRange_=range;
     //use the offset to set the rotation immediatly currently not implemented
 }
-void Gun01::SetRotationSpeed(const float speed){rotationSpeed_=speed;}
-void Gun01::SetRotationRange(const float range){rotationRange_=range;}
+void Gun::SetRotationSpeed(const float speed){rotationSpeed_=speed;}
+void Gun::SetRotationRange(const float range){rotationRange_=range;}
 
-void Gun01::SetProjectileType(const unsigned type){projectileType_=static_cast<ProjectileType>(type);}
+void Gun::SetProjectileType(const unsigned type){projectileType_=static_cast<ProjectileType>(type);}
 

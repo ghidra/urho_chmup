@@ -16,7 +16,7 @@
 #include "framework/src/State.h"
 #include "framework/src/CameraLogic.h"
 #include "framework/src/RagDoll.h"
-#include "game/Gun01.h"
+#include "game/Gun.h"
 #include "framework/src/Projectile.h"
 #include "game/Character.h"
 #include "game/Obstacle.h"
@@ -39,7 +39,7 @@ Main::Main(Context* context) :
     CameraLogic::RegisterObject(context);
     Character::RegisterObject(context);
     RagDoll::RegisterObject(context);
-    Gun01::RegisterObject(context);
+    Gun::RegisterObject(context);
     Projectile::RegisterObject(context);
     ProjectileFireball::RegisterObject(context);
     ProjectileBlaster::RegisterObject(context);

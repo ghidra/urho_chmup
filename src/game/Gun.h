@@ -1,9 +1,10 @@
-#ifndef GUN01_H
-#define GUN01_H
+#ifndef GUN_H
+#define GUN_H
 
 #pragma once
 
 #include "../framework/src/Weapon.h"
+#include "Magazine.h"
 #include "constants.h"
 
 using namespace Urho3D;
@@ -16,15 +17,15 @@ class Scene;
 
 }
 
-class Gun01 : public Weapon
+class Gun : public Weapon
 {
 
-    URHO3D_OBJECT(Gun01,Weapon);
+    URHO3D_OBJECT(Gun,Weapon);
 
 public:
 
-    Gun01(Context* context);
-    ~Gun01();
+    Gun(Context* context);
+    ~Gun();
     
     static void RegisterObject(Context* context);
 
@@ -33,6 +34,8 @@ public:
     virtual void Setup();
     virtual void Fire(float timestep);
     virtual void ReleaseFire();
+
+    virtual void SetMagSize(const unsigned size,  const float rate);
 
     void SetRotation(const float speed, const float range, const float offset=0.0f);
     void SetRotationSpeed(const float speed);
@@ -55,6 +58,8 @@ private:
     float rotationRange_;//allowable rotation range
 
     ProjectileType projectileType_;
+
+    Magazine* magazine_;
 
 };
 #endif

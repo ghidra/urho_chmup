@@ -28,7 +28,7 @@
 #include "LevelGen.h"
 #include "../framework/src/SimplexNoise.h"
 #include "../game/Character.h"
-#include "../game/Gun01.h"
+#include "../game/Gun.h"
 
 #include <Urho3D/DebugNew.h>
 #include <Urho3D/IO/Log.h>
@@ -69,7 +69,7 @@ void ChmupDebugLevel::Setup(SharedPtr<Scene> scene, SharedPtr<Node> cameraNode)
     //create another node for the weapon
     Node* weaponNode = characterNode_->CreateChild("Weapon");
     weaponNode->SetPosition(Vector3(0.5f, 1.0f, 0.0f));
-    Gun01* weapon = weaponNode->CreateComponent<Gun01>();
+    Gun* weapon = weaponNode->CreateComponent<Gun>();
     weapon->Setup();
     character_->EquipWeapon(weapon);
     //cameraNode_->SetPosition(Vector3(0.0f, 5.0f, 0.0f));

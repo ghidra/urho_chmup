@@ -8,7 +8,7 @@
 
 #include "Character.h"
 #include "states/StateCharacterFlying.h"//force it into falling first
-#include "Gun01.h"//force it into falling first
+#include "Gun.h"//force it into falling first
 
 Character::Character(Context* context) :
     Pawn(context)
@@ -87,7 +87,7 @@ void Character::ModifyWeapon(VariantMap& parms)
 {
     if(weapon_!=NULL)
     {
-        Gun01* w = static_cast<Gun01*>(weapon_);
+        Gun* w = static_cast<Gun*>(weapon_);
         if( parms.Contains("rotationSpeed") ) w->SetRotationSpeed( parms["rotationSpeed"].GetFloat() );
         if( parms.Contains("rotationRange") ) w->SetRotationRange( parms["rotationRange"].GetFloat() );
         if( parms.Contains("projectileSpeed") ) w->SetProjectileSpeed( parms["projectileSpeed"].GetFloat() );
