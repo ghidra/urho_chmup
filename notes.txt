@@ -1,19 +1,21 @@
 left off:
 
--weapon needs to be looked at.. recoil occurs dring reloads.
-	-fireing should keep going after reload even if we have the buttons down
-	-currently lasers dont start again after reload
+weapons system:
+
+-weapon needs to be looked at.. 
+	-magazine show reload progress
+	-if you relese during reload, you should be able to resume firing, maybe
 -projectile material needs a position offset per projectile so the noise isnt so uniform for follow up projectiles
 -projectile eplosion on impact
--new projectile, laser
 -new projectile lightning
 -camera shake on weapon fire
 -weapon visual referense of realoading and ammo capacity
 -making a gui type of thing where I make geo to represent ammo
 	-maybe custom geo, or just a box pre ammo
--weapon reload time works but might be a bit buggy
 
--make different projectile types
+-sheild
+-reflective shield
+-busth through things with your ship
 
 random seed in BG generation
 

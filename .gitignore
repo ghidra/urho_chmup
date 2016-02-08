@@ -10,6 +10,7 @@ link.sh
 link.bat
 launch.sh
 launch.bat
+cmake.sh
 
 bin/CoreData
 bin/Data
