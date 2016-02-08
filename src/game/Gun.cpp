@@ -71,6 +71,8 @@ void Gun::Setup()
 
     if(projectileType_==PT_LASER)
         SetProjectileContinuous(true);
+
+    magazine_->SetWeaponNode(node_,mag_size_);
 }
 
 /*void Gun01::FixedUpdate(float timeStep)
@@ -102,7 +104,14 @@ void Gun::ReleaseFire()
     node_->SetTransform(Vector3(),Quaternion());
     */
 }
-
+void Gun::Reload(const float timeStep)
+{
+    Weapon::Reload(timeStep);
+    if (!reloading_)//we are done reloading.. put the stuff back
+    {
+        magazine_->SetSize(mag_size_);
+    }
+}
 void Gun::Recoil()
 {
     //try to move the ship a little
@@ -113,6 +122,7 @@ void Gun::Recoil()
         Vector3 rdir = -ProjectileSpawnDirection_;
         ship->ApplyImpulse(rdir*projectile_speed_*0.075f);
     }
+    magazine_->Eject();
 }
 
 void Gun::SpawnProjectile()

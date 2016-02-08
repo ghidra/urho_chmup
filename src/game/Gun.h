@@ -34,6 +34,7 @@ public:
     virtual void Setup();
     virtual void Fire(float timestep);
     virtual void ReleaseFire();
+    virtual void Reload(const float timeStep);
 
     virtual void SetMagSize(const unsigned size,  const float rate);
 

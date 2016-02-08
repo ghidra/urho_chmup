@@ -26,13 +26,18 @@ public:
     void SetWeaponNode(Node* weapon, const unsigned size = 9);
     void SetSize(const unsigned size);
 
+    void Eject();
+    void Reload();
+
 private:
 
     SharedPtr<Node> weapon_;
     unsigned size_;
     unsigned remaining_;
     unsigned max_visible_;
+    float shell_offset_;//size to offset shells
 
+    SharedPtr<Node> mag_node_;
     Vector< SharedPtr<Node> > shells_;//hold the shells
 };
 #endif
