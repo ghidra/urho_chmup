@@ -22,6 +22,7 @@
 #include "game/Obstacle.h"
 #include "game/ObstacleDebris.h"
 #include "game/PickUpGun.h"
+#include "game/Casing.h"
 #include "game/ProjectileFireball.h"
 #include "game/ProjectileBlaster.h"
 #include "game/ProjectileLaser.h"
@@ -40,6 +41,7 @@ Main::Main(Context* context) :
     Character::RegisterObject(context);
     RagDoll::RegisterObject(context);
     Gun::RegisterObject(context);
+    Casing::RegisterObject(context);
     Projectile::RegisterObject(context);
     ProjectileFireball::RegisterObject(context);
     ProjectileBlaster::RegisterObject(context);

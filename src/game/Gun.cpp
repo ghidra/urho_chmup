@@ -107,10 +107,12 @@ void Gun::ReleaseFire()
 void Gun::Reload(const float timeStep)
 {
     Weapon::Reload(timeStep);
-    if (!reloading_)//we are done reloading.. put the stuff back
-    {
-        magazine_->SetSize(mag_size_);
-    }
+    
+    float elapsed = reload_timer_ / reload_interval_;
+    unsigned total_reloaded = unsigned(float(mag_size_)*elapsed);
+    unsigned put_in = total_reloaded-magazine_->GetRemaining();
+    if(put_in>0)
+        magazine_->Fill(put_in);
 }
 void Gun::Recoil()
 {

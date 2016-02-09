@@ -60,21 +60,7 @@ void Magazine::SetSize(const unsigned size)
         }
         else//we need to add more
         {
-            unsigned append = size-remaining_;
-            float ssize = float(shells_.Size());
-            //now we add to the shells_ vector and make a new node for each... up to max number
-            ResourceCache* cache = GetSubsystem<ResourceCache>();
-            for(unsigned i=0; i<append; ++i)
-            {
-                Node* shell = mag_node_->CreateChild("shell");//weapon_->GetScene()->CreateChild("shell");
-                StaticModel* sm = shell->CreateComponent<StaticModel>();
-                sm->SetModel( cache->GetResource<Model>("Models/Cylinder.mdl") );
-
-                shell->SetPosition( Vector3::FORWARD*((ssize+float(i))*shell_offset_) );
-                shell->SetScale(Vector3(0.25f,0.25f,1.0f));
-                shell->SetRotation( Quaternion(0.0f,0.0f,90.0f) );
-                shells_.Push(SharedPtr<Node>(shell));
-            }
+            Append(size-remaining_);
         }
 
         remaining_ = size;
@@ -92,7 +78,37 @@ void Magazine::Eject()
         remaining_-=1;
     }
 }
-void Magazine::Reload()
+void Magazine::Fill(const unsigned count)
 {
+    if( remaining_<size_ )
+    {
+        if(remaining_+count<=size_)//count will fitt
+        {
+            Append( count );
+            remaining_+=count;
+        }
+        else//we need to put in only what will fit
+        {
+            unsigned topoff = size_ - remaining_;
+            Append( topoff );
+            remaining_+=topoff;
+        }
+    }
+}
+//-----private functions
+void Magazine::Append(const unsigned num)
+{
+    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    unsigned ssize = shells_.Size();
+    for(unsigned i=0; i<num; ++i)
+    {
+        Node* shell = mag_node_->CreateChild("shell");//weapon_->GetScene()->CreateChild("shell");
+        StaticModel* sm = shell->CreateComponent<StaticModel>();
+        sm->SetModel( cache->GetResource<Model>("Models/Cylinder.mdl") );
 
+        shell->SetPosition( Vector3::FORWARD*(float(ssize+i)*shell_offset_) );
+        shell->SetScale(Vector3(0.25f,0.25f,1.0f));
+        shell->SetRotation( Quaternion(0.0f,0.0f,90.0f) );
+        shells_.Push(SharedPtr<Node>(shell));
+    }
 }

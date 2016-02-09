@@ -27,7 +27,9 @@ public:
     void SetSize(const unsigned size);
 
     void Eject();
-    void Reload();
+    void Fill(const unsigned count);
+
+    unsigned GetRemaining(){return remaining_;};
 
 private:
 
@@ -39,5 +41,7 @@ private:
 
     SharedPtr<Node> mag_node_;
     Vector< SharedPtr<Node> > shells_;//hold the shells
+
+    void Append(const unsigned num);
 };
 #endif
