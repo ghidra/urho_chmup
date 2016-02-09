@@ -27,7 +27,7 @@ public:
 
     static void RegisterObject(Context* context);
 
-    virtual void Setup();
+    virtual void Setup(const Vector3 position);
     //virtual void Setup();  
 };
 #endif

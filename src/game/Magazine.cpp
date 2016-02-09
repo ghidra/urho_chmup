@@ -1,6 +1,7 @@
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Core/Context.h>
 
+#include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Graphics/StaticModel.h>
 #include <Urho3D/Graphics/Model.h>
 
@@ -20,7 +21,7 @@
 #include <Urho3D/Scene/SceneEvents.h>*/
 
 #include "Magazine.h"
-#include "Gun.h"
+#include "Casing.h"
 
 Magazine::Magazine(Context* context) :
     Object(context),
@@ -73,6 +74,11 @@ void Magazine::Eject()
     if(shells_.Size()>0)
     {
         SharedPtr<Node> n = shells_.At(shells_.Size()-1);
+        //make a rigid casing
+        Node* casing_node = weapon_->GetScene()->CreateChild("Casing");
+        Casing* casing = casing_node->CreateComponent<Casing>();
+        casing->Setup(n->GetWorldPosition());
+
         n->Remove();
         shells_.Pop();
         remaining_-=1;
@@ -107,7 +113,7 @@ void Magazine::Append(const unsigned num)
         sm->SetModel( cache->GetResource<Model>("Models/Cylinder.mdl") );
 
         shell->SetPosition( Vector3::FORWARD*(float(ssize+i)*shell_offset_) );
-        shell->SetScale(Vector3(0.25f,0.25f,1.0f));
+        shell->SetScale(Vector3(0.1f,0.4f,0.1f));
         shell->SetRotation( Quaternion(0.0f,0.0f,90.0f) );
         shells_.Push(SharedPtr<Node>(shell));
     }
