@@ -20,6 +20,7 @@
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/Scene/SceneEvents.h>*/
 
+//#include "../framework/src/Weapon.h"
 #include "Magazine.h"
 #include "Casing.h"
 
@@ -86,18 +87,21 @@ void Magazine::Eject()
 }
 void Magazine::Fill(const unsigned count)
 {
+    //Weapon* w = weapon_->GetDerivedComponent<Weapon>();
     if( remaining_<size_ )
     {
         if(remaining_+count<=size_)//count will fitt
         {
             Append( count );
             remaining_+=count;
+            //w->UpdateMagRemains(count);
         }
         else//we need to put in only what will fit
         {
             unsigned topoff = size_ - remaining_;
             Append( topoff );
             remaining_+=topoff;
+            //w->UpdateMagRemains(topoff);
         }
     }
 }

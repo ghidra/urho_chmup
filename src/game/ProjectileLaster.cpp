@@ -16,7 +16,7 @@
 
 ProjectileLaser::ProjectileLaser(Context* context) :
     Projectile(context),
-    laser_length_(30.0f),
+    laser_length_(45.0f),
     laser_offset_(1.0f),
     laser_position_offset_(Vector3::FORWARD*((laser_length_/2.0f)+laser_offset_))
 {
@@ -64,7 +64,7 @@ void ProjectileLaser::FixedUpdate(float timeStep)
 
     //check if weapon is firing
     Weapon* w = weapon_node_->GetDerivedComponent<Weapon>();
-    if(!w->IsFiring() || w->IsReloading())
+    if(!w->IsFiring() || w->IsReloading() || !w->IsContinuous())
     {
         node_->Remove();
     }

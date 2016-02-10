@@ -23,7 +23,7 @@ Casing::Casing(Context* context) :
     health_ = 1.0f;
     maxHealth_ = 1.0f;
     collision_layer_ = 32;
-    collision_mask_ = 63;
+    collision_mask_ = 57;
     duration_ = 2.0f;
 }
 Casing::~Casing(){}

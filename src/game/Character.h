@@ -31,6 +31,7 @@ public:
     virtual void Setup();
 
     virtual void GiveCameraNode(Node* camera);
+    virtual SharedPtr<Node> GetCameraNode(){return cameraNode_;};
 
     void ModifyWeapon(VariantMap& parms);
 

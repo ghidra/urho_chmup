@@ -23,6 +23,8 @@
 #include "Gun.h"
 
 #include "../framework/src/Weapon.h"
+#include "Character.h"
+#include "../framework/src/CameraLogic.h"
 #include "Magazine.h"
 #include "../framework/src/Projectile.h"
 #include "ProjectileFireball.h"
@@ -89,21 +91,7 @@ void Gun::Fire(float timeStep)
     node_->SetRotation(q);
     //debug_->Hud("gun rotation",String(q));
 }
-void Gun::ReleaseFire()
-{
-    Weapon::ReleaseFire();
 
-    //if(continuous_ && continuous_spawned_)
-    //{
-    //    continuous_spawned_=false;
-        //likely need to remove the continuous projectile as well
-    //}
-    /*
-    firing_ = 0;
-    firing_timer_ = 0.0f;
-    node_->SetTransform(Vector3(),Quaternion());
-    */
-}
 void Gun::Reload(const float timeStep)
 {
     Weapon::Reload(timeStep);
@@ -125,6 +113,9 @@ void Gun::Recoil()
         ship->ApplyImpulse(rdir*projectile_speed_*0.075f);
     }
     magazine_->Eject();
+
+    CameraLogic* cam = node_->GetParent()->GetComponent<Character>()->GetCameraNode()->GetComponent<CameraLogic>();
+    cam->ShakeCamera(Vector3(Random(),Random(),Random())*projectile_speed_*0.0025f);
 }
 
 void Gun::SpawnProjectile()

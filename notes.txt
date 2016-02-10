@@ -3,19 +3,17 @@ left off:
 weapons system:
 
 -weapon needs to be looked at.. 
-	-magazine show reload progress
-	-if you relese during reload, you should be able to resume firing, maybe
+	-shotgun effect
+	-if you release during reload, you should be able to resume firing, maybe
+	-reload button
+		-waiting to automatically reload, reloads slower. manual reload reloads faster
 -projectile material needs a position offset per projectile so the noise isnt so uniform for follow up projectiles
--projectile eplosion on impact
+-projectile explosion on impact
 -new projectile lightning
--camera shake on weapon fire
--weapon visual referense of realoading and ammo capacity
--making a gui type of thing where I make geo to represent ammo
-	-maybe custom geo, or just a box pre ammo
 
 -sheild
 -reflective shield
--busth through things with your ship
+-bust through things with your ship
 
 random seed in BG generation
 
