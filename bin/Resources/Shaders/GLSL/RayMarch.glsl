@@ -166,12 +166,12 @@ void PS()
     vec3 dir = normalize(vec3(vWorldPos)-cCameraPosPS);
 
 
-    vec3 vig = vec3(1.0)*clamp(1.0-length(vec3(vScreenPos.r,vScreenPos.g,0.0)-0.5),0.0,1.0);
+    //vec3 vignette = vec3(1.0)*clamp(1.0-length(vec3(vScreenPos.r,vScreenPos.g,0.0)-0.5),0.0,1.0);
     //gl_FragColor = vec4(vig,1.0);//vScreenPos4;
     //gl_FragColor = vec4(dir,1.0);
     //vec3 pp = (vec3(0.0)*vTransform).xyz;
-    vec3 offsetPosition = cCameraPosPS-vPos;
-    vec3 offsetDirection = dir*vRot;
+    vec3 offsetPosition = (cCameraPosPS-vPos)*transpose(vRot);
+    vec3 offsetDirection = dir*transpose(vRot);
     vec3 inter = vec3(intersect(offsetPosition,offsetDirection)*0.1);
     gl_FragColor = vec4(inter,1.0);
 }
