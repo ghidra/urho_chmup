@@ -4,8 +4,15 @@
 #include "ScreenPos.glsl"
 #include "Lighting.glsl"
 
+#define PI 3.14
 
 //varying vec2 vTexCoord;
+uniform vec3 cShapeScale;
+//varying mat4 vTransform;
+varying vec3 vPos;
+varying mat3 vRot;
+//varying vec3 vEuler;
+//varying mat3 vCameraRotation;
 
 varying vec2 vScreenPos;
 varying vec4 vScreenPos4;
@@ -35,6 +42,22 @@ varying vec4 vWorldPos;
     #endif
 #endif
 
+#ifdef COMPILEVS
+//NOT USED
+vec3 GetEuler(mat3 R){
+
+    float x1 = -asin(R[0][2]);
+    float x2 = PI - x1;
+
+    float y1 = atan(R[1][2] / cos(x1), R[2][2] / cos(x1));
+    float y2 = atan(R[1][2] / cos(x2), R[2][2] / cos(x2));
+
+    float z1 = atan(R[0][1] / cos(x1), R[0][0] / cos(x1));
+    float z2 = atan(R[0][1] / cos(x2), R[0][0] / cos(x2));
+    return vec3(x1,y1,z1);
+}
+#endif
+
 void VS()
 {
     mat4 modelMatrix = iModelMatrix;
@@ -42,7 +65,11 @@ void VS()
     gl_Position = GetClipPos(worldPos);
     vNormal = GetWorldNormal(modelMatrix);
     vWorldPos = vec4(worldPos, GetDepth(gl_Position));
-
+    //vTransform = modelMatrix;
+    vPos = (vec4(0.0,0.0,0.0,1.0)*modelMatrix).xyz;
+    vRot = GetNormalMatrix(modelMatrix);
+    //vEuler = GetEuler(mat3(modelMatrix));
+    //vCameraRotation = cCameraRot;
     //vTexCoord = GetQuadTexCoord(gl_Position);
     vScreenPos = GetScreenPosPreDiv(gl_Position);
     vScreenPos4 = GetScreenPos(gl_Position);
@@ -82,7 +109,7 @@ float intersect( in vec3 ro, in vec3 rd )
         //scale for shaping
         if( (h<precis) || (t>maxd) ) break;
         vec3 mm = ro+rd*t;
-        mm*=vec3(2.1,2.2,1.3);//scale the shape
+        mm*=cShapeScale;//scale the shape
         mm=vec3(abs(mm.x),mm.y,mm.z);//mirror along x
         
         h = map( mm );
@@ -142,6 +169,9 @@ void PS()
     vec3 vig = vec3(1.0)*clamp(1.0-length(vec3(vScreenPos.r,vScreenPos.g,0.0)-0.5),0.0,1.0);
     //gl_FragColor = vec4(vig,1.0);//vScreenPos4;
     //gl_FragColor = vec4(dir,1.0);
-    vec3 inter = vec3(intersect(vec3(0,0,0),dir)*0.1);
+    //vec3 pp = (vec3(0.0)*vTransform).xyz;
+    vec3 offsetPosition = cCameraPosPS-vPos;
+    vec3 offsetDirection = dir*vRot;
+    vec3 inter = vec3(intersect(offsetPosition,offsetDirection)*0.1);
     gl_FragColor = vec4(inter,1.0);
 }
