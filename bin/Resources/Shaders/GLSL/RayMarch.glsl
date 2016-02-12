@@ -4,10 +4,15 @@
 #include "ScreenPos.glsl"
 #include "Lighting.glsl"
 
+#include "Functions.glsl"
+
 #define PI 3.14
 
 //varying vec2 vTexCoord;
+#ifdef COMPILEPS
 uniform vec3 cShapeScale;
+uniform float cRadius;
+#endif
 //varying mat4 vTransform;
 varying vec3 vPos;
 varying mat3 vRot;
@@ -17,11 +22,9 @@ varying mat3 vRot;
 varying vec2 vScreenPos;
 varying vec4 vScreenPos4;
 
-varying vec3 vNormal;
+//varying vec3 vNormal;
 varying vec4 vWorldPos;
-#ifdef VERTEXCOLOR
-    varying vec4 vColor;
-#endif
+
 #ifdef PERPIXEL
     #ifdef SHADOW
         varying vec4 vShadowPos[NUMCASCADES];
@@ -63,7 +66,7 @@ void VS()
     mat4 modelMatrix = iModelMatrix;
     vec3 worldPos = GetWorldPos(modelMatrix);
     gl_Position = GetClipPos(worldPos);
-    vNormal = GetWorldNormal(modelMatrix);
+    //vNormal = GetWorldNormal(modelMatrix);
     vWorldPos = vec4(worldPos, GetDepth(gl_Position));
     //vTransform = modelMatrix;
     vPos = (vec4(0.0,0.0,0.0,1.0)*modelMatrix).xyz;
@@ -73,6 +76,30 @@ void VS()
     //vTexCoord = GetQuadTexCoord(gl_Position);
     vScreenPos = GetScreenPosPreDiv(gl_Position);
     vScreenPos4 = GetScreenPos(gl_Position);
+
+    #ifdef PERPIXEL // Per-pixel forward lighting
+        vec4 projWorldPos = vec4(worldPos, 1.0);
+        #ifdef SHADOW
+            for (int i = 0; i < NUMCASCADES; i++)
+                vShadowPos[i] = GetShadowPos(i, projWorldPos); // Shadow projection: transform from world space to shadow space
+        #endif
+        #ifdef SPOTLIGHT
+            vSpotPos = projWorldPos * cLightMatrices[0];// Spotlight projection: transform from world space to projector texture coordinates
+        #endif
+        #ifdef POINTLIGHT
+            vCubeMaskVec = (worldPos - cLightPos.xyz) * mat3(cLightMatrices[0][0].xyz, cLightMatrices[0][1].xyz, cLightMatrices[0][2].xyz);
+        #endif
+    #else // Ambient & per-vertex lighting
+        vVertexLight = GetAmbient(GetZonePos(worldPos));
+        #ifdef NUMVERTEXLIGHTS
+            for (int i = 0; i < NUMVERTEXLIGHTS; ++i)
+                vVertexLight += GetVertexLight(i, worldPos, vNormal) * cVertexLights[i * 3].rgb;
+        #endif
+        //vScreenPos = GetScreenPos(gl_Position);
+        #ifdef ENVCUBEMAP
+            vReflectionVec = worldPos - cCameraPos;
+        #endif
+    #endif
 
 }
 
@@ -96,14 +123,14 @@ float map( vec3 q )
     return d * 0.05;
 }
 
-float intersect( in vec3 ro, in vec3 rd )
+float intersect( in vec3 ro, in vec3 rd , in float start, in float end)
 {
-    const float maxd = 7.0;
+    float maxd = end;//start+7.0;
 
     float precis = 0.001;
-    float h = 1.0;
-    float t = 1.0;
-    for( int i=0; i<256; i++ )
+    float h = (end-start)/128.0;//1.0;
+    float t =  start;//1.0;
+    for( int i=0; i<128; i++ )
     {
         //in here I do the clamping for symetry, and
         //scale for shaping
@@ -118,51 +145,37 @@ float intersect( in vec3 ro, in vec3 rd )
 
     if( t>maxd ) t=-1.0;
     return t;
+    //return fit(t,start,end,0.0,1.0);
+}
+
+vec3 calcNormal( in vec3 pos )
+{
+    vec3 eps = vec3(0.005,0.0,0.0);
+    return normalize( vec3(
+           map(pos+eps.xyy) - map(pos-eps.xyy),
+           map(pos+eps.yxy) - map(pos-eps.yxy),
+           map(pos+eps.yyx) - map(pos-eps.yyx) ) );
+}
+
+///---
+////----
+float GetDiffuseLOCAL(vec3 normal, vec3 worldPos, out vec3 lightDir)
+{
+    #ifdef DIRLIGHT
+        lightDir = cLightDirPS;
+        return max(dot(normal, lightDir), 0.0);
+    #else
+        vec3 lightVec = (cLightPosPS.xyz - worldPos) * cLightPosPS.w;
+        float lightDist = length(lightVec);
+        lightDir = lightVec / lightDist;
+        return max(dot(normal, lightDir), 0.0) * texture2D(sLightRampMap, vec2(lightDist, 0.0)).r;
+    #endif
 }
 
 #endif
 
 void PS()
 {
-    // Get material diffuse albedo
-
-    
-    // Get material specular albedo
-
-
-    // Per-pixel forward lighting
-    //vec3 lightColor;
-    //vec3 lightDir;
-    //vec3 finalColor;
-
-    //float diff = GetDiffuse(normal, vWorldPos.xyz, lightDir);
-
-    #ifdef SHADOW
-        //diff *= GetShadow(vShadowPos, vWorldPos.w);
-    #endif
-
-    #if defined(SPOTLIGHT)
-        //lightColor = vSpotPos.w > 0.0 ? texture2DProj(sLightSpotMap, vSpotPos).rgb * cLightColor.rgb : vec3(0.0, 0.0, 0.0);
-    #elif defined(CUBEMASK)
-        //lightColor = textureCube(sLightCubeMap, vCubeMaskVec).rgb * cLightColor.rgb;
-    #else
-        //lightColor = cLightColor.rgb;
-    #endif
-
-    #ifdef SPECULAR
-        //float spec = GetSpecular(normal, cCameraPosPS - vWorldPos.xyz, lightDir, cMatSpecColor.a);
-        //finalColor = diff * lightColor * (diffColor.rgb + spec * specColor * cLightColor.a);
-    #else
-        //finalColor = diff * lightColor * diffColor.rgb;
-    #endif
-
-    #ifdef AMBIENT
-        //finalColor += cAmbientColor * diffColor.rgb;
-        //finalColor += cMatEmissiveColor;
-        //gl_FragColor = vec4(GetFog(finalColor, fogFactor), diffColor.a);
-    #else
-        //gl_FragColor = vec4(GetLitFog(finalColor, fogFactor), diffColor.a);
-    #endif
     vec3 dir = normalize(vec3(vWorldPos)-cCameraPosPS);
 
 
@@ -170,8 +183,34 @@ void PS()
     //gl_FragColor = vec4(vig,1.0);//vScreenPos4;
     //gl_FragColor = vec4(dir,1.0);
     //vec3 pp = (vec3(0.0)*vTransform).xyz;
-    vec3 offsetPosition = (cCameraPosPS-vPos)*transpose(vRot);
+    vec3 difference = cCameraPosPS-vPos;
+    vec3 offsetPosition = (difference)*transpose(vRot);
     vec3 offsetDirection = dir*transpose(vRot);
-    vec3 inter = vec3(intersect(offsetPosition,offsetDirection)*0.1);
-    gl_FragColor = vec4(inter,1.0);
+    float ldifference = length(difference);
+    float inter = intersect(offsetPosition,offsetDirection,ldifference-cRadius,ldifference+cRadius);
+
+    vec3 pos = (offsetPosition+inter*offsetDirection)*cShapeScale;
+    vec3 spos = vec3(abs(pos.x),pos.y,pos.z);//mirrored sample position
+    vec3 normal = calcNormal(spos);
+    normal*=vec3(clamp(pos.x*1000.0,-1.0,1.0),1.0,1.0);
+
+    //gl_FragColor = vec4(normal*clamp(inter*1000.0,0.0,1.0),1.0);
+    //gl_FragColor = vec4(vec3(inter),1.0);
+     
+
+    // Per-pixel forward lighting
+    vec3 lightColor;
+    vec3 lightDir;
+    vec3 finalColor;
+
+    //vec3 normal = normalize(vNormal);
+
+    float diff = GetDiffuse(normal, vWorldPos.xyz, lightDir);
+    lightColor = cLightColor.rgb;
+    finalColor = diff * lightColor * vec3(0.4,0.2,0.0);//diffColor.rgb;
+
+    float io =  clamp(inter*1000.0,0.0,1.0);
+    gl_FragColor = vec4(finalColor*io, io);
+    
+    
 }

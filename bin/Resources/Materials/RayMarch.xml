@@ -1,5 +1,5 @@
 <material>
     <technique name="Techniques/RayMarch.xml" />
     <parameter name="ShapeScale" value="8.2 10.2 6.3" />
-    <!--<parameter name="Speed" value="2.1 2.2 1.3" />-->
+    <parameter name="Radius" value="1.0" />
 </material>
