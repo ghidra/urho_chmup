@@ -80,6 +80,11 @@ void VS()
     #ifdef PERPIXEL // Per-pixel forward lighting
         vec4 projWorldPos = vec4(worldPos, 1.0);
         #ifdef SHADOW
+            #ifdef VSM_SHADOW
+                vTexCoord = vec3(GetTexCoord(iTexCoord), gl_Position.z / gl_Position.w * 0.5 + 0.5);
+            #else
+                vTexCoord = GetTexCoord(iTexCoord);
+            #endif
             for (int i = 0; i < NUMCASCADES; i++)
                 vShadowPos[i] = GetShadowPos(i, projWorldPos); // Shadow projection: transform from world space to shadow space
         #endif
@@ -159,19 +164,6 @@ vec3 calcNormal( in vec3 pos )
 
 ///---
 ////----
-float GetDiffuseLOCAL(vec3 normal, vec3 worldPos, out vec3 lightDir)
-{
-    #ifdef DIRLIGHT
-        lightDir = cLightDirPS;
-        return max(dot(normal, lightDir), 0.0);
-    #else
-        vec3 lightVec = (cLightPosPS.xyz - worldPos) * cLightPosPS.w;
-        float lightDist = length(lightVec);
-        lightDir = lightVec / lightDist;
-        return max(dot(normal, lightDir), 0.0) * texture2D(sLightRampMap, vec2(lightDist, 0.0)).r;
-    #endif
-}
-
 #endif
 
 void PS()
@@ -188,6 +180,10 @@ void PS()
     vec3 offsetDirection = dir*transpose(vRot);
     float ldifference = length(difference);
     float inter = intersect(offsetPosition,offsetDirection,ldifference-cRadius,ldifference+cRadius);
+    float io = clamp(inter*1000.0,0.0,1.0);
+
+    if(io<=0.0)
+        discard;
 
     vec3 pos = (offsetPosition+inter*offsetDirection)*cShapeScale;
     vec3 spos = vec3(abs(pos.x),pos.y,pos.z);//mirrored sample position
@@ -204,13 +200,26 @@ void PS()
     vec3 finalColor;
 
     //vec3 normal = normalize(vNormal);
+   
 
-    float diff = GetDiffuse(normal, vWorldPos.xyz, lightDir);
-    lightColor = cLightColor.rgb;
-    finalColor = diff * lightColor * vec3(0.4,0.2,0.0);//diffColor.rgb;
+    //finalColor = diff * lightColor * diffColor.rgb;
+    //gl_FragColor = vec4(finalColor, diffColor.a);
 
-    float io =  clamp(inter*1000.0,0.0,1.0);
-    gl_FragColor = vec4(finalColor*io, io);
+    //gl_FragColor = vec4(vec3(diff),1.0);
+    #ifdef SHADOW
+        #ifdef VSM_SHADOW
+            float depth = vTexCoord.z;
+            gl_FragColor = vec4(depth, depth * depth, 1.0, 1.0);
+        #else
+            gl_FragColor = vec4(1.0);
+        #endif
+    #else
     
+        float diff = GetDiffuse(normal, vWorldPos.xyz, lightDir);
+        lightColor = cLightColor.rgb;
+        finalColor = diff * lightColor * vec3(0.4,0.2,0.0);//diffColor.rgb;
+
+        gl_FragColor = vec4(vec3(finalColor),1.0);
+    #endif
     
 }

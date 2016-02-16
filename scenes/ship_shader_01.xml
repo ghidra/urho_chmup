@@ -7,15 +7,15 @@
 	<attribute name="Elapsed Time" value="0" />
 	<attribute name="Next Replicated Node ID" value="1" />
 	<attribute name="Next Replicated Component ID" value="3" />
-	<attribute name="Next Local Node ID" value="16777220" />
-	<attribute name="Next Local Component ID" value="16777220" />
+	<attribute name="Next Local Node ID" value="16777221" />
+	<attribute name="Next Local Component ID" value="16777221" />
 	<attribute name="Variables" />
 	<attribute name="Variable Names" value="" />
 	<component type="Octree" id="1" />
 	<component type="DebugRenderer" id="2" />
 	<node id="16777216">
 		<attribute name="Is Enabled" value="true" />
-		<attribute name="Name" value="" />
+		<attribute name="Name" value="ship" />
 		<attribute name="Position" value="0 0 0" />
 		<attribute name="Rotation" value="1 0 0 0" />
 		<attribute name="Scale" value="1 1 1" />
@@ -28,9 +28,9 @@
 	</node>
 	<node id="16777217">
 		<attribute name="Is Enabled" value="true" />
-		<attribute name="Name" value="" />
+		<attribute name="Name" value="direction light" />
 		<attribute name="Position" value="0 -11.0653 22.1306" />
-		<attribute name="Rotation" value="0.37614 0.136607 -0.849013 0.345013" />
+		<attribute name="Rotation" value="0.374863 0.139523 -0.846509 0.351331" />
 		<attribute name="Scale" value="1 1 1" />
 		<attribute name="Variables" />
 		<component type="Light" id="16777217">
@@ -40,7 +40,7 @@
 	</node>
 	<node id="16777218">
 		<attribute name="Is Enabled" value="true" />
-		<attribute name="Name" value="" />
+		<attribute name="Name" value="sphere" />
 		<attribute name="Position" value="-1.22 0 0" />
 		<attribute name="Rotation" value="1 0 0 0" />
 		<attribute name="Scale" value="1 1 1" />
@@ -53,7 +53,7 @@
 	</node>
 	<node id="16777219">
 		<attribute name="Is Enabled" value="true" />
-		<attribute name="Name" value="" />
+		<attribute name="Name" value="ground" />
 		<attribute name="Position" value="0 -1.2 0" />
 		<attribute name="Rotation" value="1 0 0 0" />
 		<attribute name="Scale" value="10 1 10" />

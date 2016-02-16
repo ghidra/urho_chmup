@@ -9,7 +9,7 @@
     <pass name="alpha" depthwrite="false" blend="alpha" />
     <pass name="litalpha" depthwrite="false" blend="addalpha" />
     <pass name="depth" vs="Depth" ps="Depth" />
-    <pass name="shadow" vs="Shadow" ps="Shadow" />
+    <pass name="shadow"  />
 
     <!--<pass name="base" />
     <pass name="depth" vs="Depth" ps="Depth" />-->
