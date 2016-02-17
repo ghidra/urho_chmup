@@ -81,9 +81,9 @@ CustomGeo* LevelGen::Grid(const Vector3 ws_offset)
 {
     CustomGeo* cg = new CustomGeo(context_);
 
-    cg->GetKlein(24,24);
+    //cg->GetKlein(24,24);
     //cg->Subdivide();
-    /*
+    
     Tile(cg,ws_offset,Vector3(-tilescale_,0.0f,0.0f));//floor
     Tile(cg,ws_offset,Vector3(tilescale_,0.0f,0.0f),1);
     Tile(cg,ws_offset,Vector3(-tilescale_,0.0f,tilescale_*2.0f),2);
@@ -92,7 +92,7 @@ CustomGeo* LevelGen::Grid(const Vector3 ws_offset)
     Tile(cg,ws_offset,Vector3(-tilescale_*2.0f,0.0f,0.0f),4,-1);//wall
     Tile(cg,ws_offset,Vector3(tilescale_*2.0f,0.0f,0.0f),5,1);//wall
     Tile(cg,ws_offset,Vector3(-tilescale_*2.0f,0.0f,tilescale_*2.0f),6,-1);
-    Tile(cg,ws_offset,Vector3(tilescale_*2.0f,0.0f,tilescale_*2.0f),7,1);*/
+    Tile(cg,ws_offset,Vector3(tilescale_*2.0f,0.0f,tilescale_*2.0f),7,1);
 
     nodes_.Push( node_->CreateChild("tile") );
     nodes_[nodes_.Size()-1]->SetPosition(ws_offset);
@@ -100,7 +100,7 @@ CustomGeo* LevelGen::Grid(const Vector3 ws_offset)
     //cg->Subdivide();
 
 
-    cg->Build(nodes_[nodes_.Size()-1],true,32,63);
+    cg->Build(nodes_[nodes_.Size()-1],false,true,32,63);
     //nodes_[nodes_.Size()-1]->SetScale(2);
 
     //here is a good place to also thrown down some obstacles

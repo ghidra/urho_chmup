@@ -21,17 +21,18 @@ public:
 	//PODVector<Vector3>* GetPoints(){return &points_;};
 	//void SetPoint(const unsigned short i, const Vector3 p);
 
-	void AddTriangle(const unsigned short p1, const unsigned short p2, const unsigned short p3);
-	void Surface(const unsigned short slices, const unsigned short stacks, Vector3 (CustomGeo::*fptr)(void*, float, float), void* context);
+	void AddTriangle(const unsigned p1, const unsigned p2, const unsigned p3);
+	void Surface(const unsigned slices, const unsigned stacks, Vector3 (CustomGeo::*fptr)(void*, float, float), void* context);
 	void Subdivide(const unsigned short depth=1);
 	void GetSphere(const unsigned short u, const unsigned short v);
 	void GetKlein(const unsigned short u, const unsigned short v);
-	void Build(Node* node, const bool rigid = false, const unsigned layer = 0, const unsigned mask = 0);
+	void Build(Node* node, const bool smooth = true, const bool rigid = false, const unsigned layer = 0, const unsigned mask = 0);
 	Node* GetNode(){return node_;};
 
 private:
 
 	Vector3 Normal(const Vector3& p1, const Vector3& p2, const Vector3& p3);
+	Vector3 GetSmoothNormal(const unsigned i);
 	void FitBB(const Vector3 p);
 	void Debug(const String label, const String value);
 	void DoSubdivide();//this does the actual subdivision, called from Subdivide
@@ -42,8 +43,11 @@ private:
 	SharedPtr<Node> node_;
 
 	PODVector<Vector3> points_;
-	PODVector<unsigned short> ids_;
+	PODVector<unsigned> ids_;
+	Vector< PODVector<unsigned> > shared_normal_ids_;
 	PODVector<Vector3> normals_;
+
+	//bool smooth_;
 
 	Vector3 bbmin_;
 	Vector3 bbmax_;
