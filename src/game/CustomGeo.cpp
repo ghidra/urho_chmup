@@ -185,13 +185,37 @@ Vector3 CustomGeo::Normal(const Vector3& p1, const Vector3& p2, const Vector3& p
 	return edge1.CrossProduct(edge2).Normalized();
 }
 ///-----surfaces
+//http://prideout.net/blog/?p=44
 Vector3 CustomGeo::Sphere(void* context, const float u, const float v)
 {
-	return Vector3::ZERO;
+	float x = sin(u)*cos(v);
+	float y = cos(u);
+	float z = -sin(u)*sin(v);
+	return Vector3(x,y,z);
 }
 void CustomGeo::GetSphere(const unsigned short u, const unsigned short v)
 {
 	Surface(u,v,&CustomGeo::Sphere,0);
+}
+Vector3 CustomGeo::Klein(void* context, const float u, const float v)
+{
+	float x,y,z;
+	float nu = u*2.0f;
+	if(u<3.14){
+		x = 3.0f * cos(nu) * (1.0f + sin(nu)) + (2.0f * (1.0f - cos(nu) / 2.0f)) * cos(nu) * cos(v);
+		z = -8.0f * sin(nu) - 2.0f * (1.0f - cos(nu) / 2.0f) * sin(nu) * cos(v);
+	}
+	else
+	{
+		x = 3.0f * cos(nu) * (1.0f + sin(nu)) + (2.0f * (1.0f - cos(nu) / 2.0f)) * cos(v + 3.14);
+		z = -8.0f * sin(nu);
+	}
+	y = -2.0f * (1.0f - cos(nu) / 2.0f) * sin(v);
+	return Vector3(x,y,z);
+}
+void CustomGeo::GetKlein(const unsigned short u, const unsigned short v)
+{
+	Surface(u,v,&CustomGeo::Klein,0);
 }
 //------debug
 void CustomGeo::Debug(const String label, const String value){

@@ -25,6 +25,7 @@ public:
 	void Surface(const unsigned short slices, const unsigned short stacks, Vector3 (CustomGeo::*fptr)(void*, float, float), void* context);
 	void Subdivide(const unsigned short depth=1);
 	void GetSphere(const unsigned short u, const unsigned short v);
+	void GetKlein(const unsigned short u, const unsigned short v);
 	void Build(Node* node, const bool rigid = false, const unsigned layer = 0, const unsigned mask = 0);
 	Node* GetNode(){return node_;};
 
@@ -36,6 +37,7 @@ private:
 	void DoSubdivide();//this does the actual subdivision, called from Subdivide
 
 	Vector3 Sphere(void* context, const float u, const float v);
+	Vector3 Klein(void* context, const float u, const float v);
 
 	SharedPtr<Node> node_;
 
